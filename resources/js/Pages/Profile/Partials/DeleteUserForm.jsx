@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react';
-import DangerButton from '@/Components/DangerButton';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
+import DangerButton from '@/Components/Default/DangerButton';
+import InputError from '@/Components/Default/InputError';
+import InputLabel from '@/Components/Default/InputLabel';
+import Modal from '@/Components/Default/Modal';
+import SecondaryButton from '@/Components/Default/SecondaryButton';
+import TextInput from '@/Components/Default/TextInput';
 import { useForm } from '@inertiajs/react';
 
 export default function DeleteUserForm({ className = '' }) {
@@ -58,16 +58,16 @@ export default function DeleteUserForm({ className = '' }) {
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 text-center">
                         Are you sure you want to delete your account?
                     </h2>
 
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 text-center">
                         Once your account is deleted, all of its resources and data will be permanently deleted. Please
                         enter your password to confirm you would like to permanently delete your account.
                     </p>
 
-                    <div className="mt-6">
+                    <div className="inline-flex items-center justify-center w-full space-x-2 mt-3">
                         <InputLabel htmlFor="password" value="Password" className="sr-only" />
 
                         <TextInput
@@ -85,8 +85,10 @@ export default function DeleteUserForm({ className = '' }) {
                         <InputError message={errors.password} className="mt-2" />
                     </div>
 
-                    <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
+                    <div className="mt-6 flex justify-center">
+                        <SecondaryButton onClick={closeModal}>
+                            No, Cancel
+                        </SecondaryButton>
 
                         <DangerButton className="ms-3" disabled={processing}>
                             Delete Account

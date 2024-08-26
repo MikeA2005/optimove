@@ -123,4 +123,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'constants' => [
+        'SMMLV' => 1300000,
+        'TRANSPORT_ALLOWANCE' => 162000,
+    ],
 ];
