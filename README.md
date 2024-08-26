@@ -5,10 +5,10 @@
 Optimove es una aplicación web de nómina y RRHH, que cuenta con las siguientes funcionalidad:
 - **Registro de Usuarios**
 
-### Premium Partners
+### Autores
 
 - **[MikeA2005](https://github.com/MikeA2005)**
 
-## License
+## Licencia
 
 Este es una aplicación Open Source [MIT license](https://opensource.org/licenses/MIT).
