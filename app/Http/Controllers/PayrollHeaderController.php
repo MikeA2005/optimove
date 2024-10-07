@@ -51,6 +51,16 @@ class PayrollHeaderController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(PayrollHeader $payrollHeader)
+    {
+        return Inertia::render('PayrollDetails/Index', [
+            'header' => $payrollHeader
+        ]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(PayrollHeader $payrollHeader)

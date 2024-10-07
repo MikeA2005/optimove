@@ -37,7 +37,7 @@ function Index({ auth }) {
             key: "name",
             label: "Nombre",
             render: (payrollHeader) => (
-                <Link href="" className="underline">
+                <Link href={route('payroll-details.index')} className="underline">
                     {payrollHeader.name}
                 </Link>
             )

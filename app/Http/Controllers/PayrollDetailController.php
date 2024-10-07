@@ -18,7 +18,7 @@ class PayrollDetailController extends Controller
      */
     public function index(Request $request)
     {
-        $payrollDetails = PayrollDetail::with('employee')
+        $payrollDetails = PayrollDetail::with('employee, payrollHeader')
         ->when($request->has('employee_id'), function ($query) use ($request) {
             $query->where('employee_id', $request->input('employee_id'));
         })
