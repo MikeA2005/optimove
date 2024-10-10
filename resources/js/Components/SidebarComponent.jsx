@@ -85,7 +85,7 @@ function SidebarComponent({ isOpen }) {
                         </Sidebar.Item>
                     </Sidebar.Collapse>
 
-                    <Sidebar.Item as={Link} icon={HiUsers} href="">
+                    <Sidebar.Item as={Link} href={route('users.index')} active={route().current('users.index')} icon={HiUsers}>
                         Users
                     </Sidebar.Item>
                 </Sidebar.ItemGroup>

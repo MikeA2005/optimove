@@ -10,6 +10,7 @@ use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PayrollDetailController;
 use App\Http\Controllers\PayrollHeaderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('vacations', VacationController::class)->names('vacations');
     Route::resource('payroll-headers', PayrollHeaderController::class)->names('payroll-headers');
     Route::resource('payroll-details', PayrollDetailController::class)->names('payroll-details');
+    Route::resource('users', UserController::class)->names('users');
 });
 
 Route::middleware('auth')->group(function () {
