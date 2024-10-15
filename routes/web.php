@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('loans', LoanController::class)->names('loans');
     Route::resource('vacations', VacationController::class)->names('vacations');
     Route::resource('payroll-headers', PayrollHeaderController::class)->names('payroll-headers');
+    Route::get('/payroll-headers/{payroll_headers}', [PayrollHeaderController::class, 'show'])->name('payroll-headers.show'); 
     Route::resource('payroll-details', PayrollDetailController::class)->names('payroll-details');
     Route::resource('users', UserController::class)->names('users');
 });

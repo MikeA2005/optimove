@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePayrollDetailRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\PayrollDetailResource;
 use App\Models\Employee;
+use App\Models\PayrollHeader;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -18,17 +19,24 @@ class PayrollDetailController extends Controller
      */
     public function index(Request $request)
     {
+        $headerId = $request->query('header_id');
+        $payrollHeader = PayrollHeader::find($headerId); // Obtener el PayrollHeader
+
         $payrollDetails = PayrollDetail::with('employee, payrollHeader')
-        ->when($request->has('employee_id'), function ($query) use ($request) {
-            $query->where('employee_id', $request->input('employee_id'));
-        })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10)
-        ->withQueryString();
+            ->when($headerId, function ($query) use ($headerId) {
+                $query->where('payroll_header_id', $headerId);
+            })
+            ->when($request->has('employee_id'), function ($query) use ($request) {
+                $query->where('employee_id', $request->input('employee_id'));
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('PayrollDetails/Index', [
             'payrollDetails' => PayrollDetailResource::collection($payrollDetails),
             'employees' => EmployeeResource::collection(Employee::all()),
+            'payrollHeader' => $payrollHeader, // Pasar el PayrollHeader a la vista
         ]);
     }
 
@@ -49,8 +57,14 @@ class PayrollDetailController extends Controller
     public function store(StorePayrollDetailRequest $request)
     {
         try {
-            PayrollDetail::create($request->validated());
-            return redirect()->route('payroll-details.index')->with('flash.success', 'Payroll detail created successfully.');
+            $headerId = $request->input('header_id'); // Obtener el header_id
+    
+            PayrollDetail::create(array_merge($request->validated(), [
+                'payroll_header_id' => $headerId, // Asignar el header_id
+            ]));
+    
+            return redirect()->route('payroll-details.index', ['header_id' => $headerId])
+                ->with('flash.success', 'Payroll detail created successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('flash.error', 'Error creating payroll detail.');
         }
@@ -61,7 +75,9 @@ class PayrollDetailController extends Controller
      */
     public function show(PayrollDetail $payrollDetail)
     {
-        //
+        return Inertia::render('PayrollDetails/Index', [
+            'payrollDetail' => new PayrollDetailResource($payrollDetail),
+        ]);
     }
 
     /**

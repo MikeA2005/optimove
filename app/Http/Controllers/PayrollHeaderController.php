@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\PayrollHeader;
 use App\Http\Requests\StorePayrollHeaderRequest;
 use App\Http\Requests\UpdatePayrollHeaderRequest;
+use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\PayrollDetailResource;
 use App\Http\Resources\PayrollHeaderResource;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -56,7 +59,9 @@ class PayrollHeaderController extends Controller
     public function show(PayrollHeader $payrollHeader)
     {
         return Inertia::render('PayrollDetails/Index', [
-            'header' => $payrollHeader
+            'payrollHeader' => $payrollHeader,
+            'payrollDetails' => $payrollHeader->payrollDetails,
+            'employees' => EmployeeResource::collection(Employee::all()),
         ]);
     }
 

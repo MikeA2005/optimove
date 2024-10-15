@@ -11,9 +11,10 @@ function PayrollDetailDrawer({
     onClose,
     payrollDetail = null,
     employees,
+    payrollHeader=null
 }) {
     const isEditing = payrollDetail !== null; // Determina si se está editando un detalle de nómina
-    
+
     // useForm de Inertia.js para manejar el formulario
     const { data, setData, post, put, processing, errors, reset } = useForm({
         employee_id: "",
@@ -48,15 +49,23 @@ function PayrollDetailDrawer({
             },
             onError: (error) => {
                 console.log("Error handling payroll detail", error);
-            }
+            },
+            data: {
+                ...data,
+                header_id: isEditing ? payrollDetail.payroll_header_id : payrollHeader ? payrollHeader.id : null 
+            },
         });
     };
-    
+
     // Renderiza el Drawer con el formulario para agregar o editar detalles de nómina
     return (
         <Drawer open={isOpen} onClose={onClose} position="right">
             <Drawer.Header
-                title={isEditing ? "Editar Detalle de Nómina" : "Agregar Detalle de Nómina"}
+                title={
+                    isEditing
+                        ? "Editar Detalle de Nómina"
+                        : "Agregar Detalle de Nómina"
+                }
                 titleIcon={isEditing ? HiOutlinePencilAlt : HiOutlinePlus}
             />
             <Drawer.Items>
@@ -71,13 +80,20 @@ function PayrollDetailDrawer({
                             <select
                                 id="employee_id"
                                 value={data.employee_id}
-                                onChange={(e) => setData("employee_id", e.target.value)}
+                                onChange={(e) =>
+                                    setData("employee_id", e.target.value)
+                                }
                                 className="input"
                             >
                                 <option value="">Selecciona un empleado</option>
                                 {employees.data.map((employee) => (
-                                    <option key={employee.id} value={employee.id}>
-                                        { employee.last_name + " " + employee.first_name}
+                                    <option
+                                        key={employee.id}
+                                        value={employee.id}
+                                    >
+                                        {employee.last_name +
+                                            " " +
+                                            employee.first_name}
                                     </option>
                                 ))}
                             </select>
@@ -93,7 +109,9 @@ function PayrollDetailDrawer({
                                 id="other_earnings"
                                 type="number"
                                 value={data.other_earnings}
-                                onChange={(e) => setData("other_earnings", e.target.value)}
+                                onChange={(e) =>
+                                    setData("other_earnings", e.target.value)
+                                }
                                 className="input"
                             />
                             <InputError message={errors.other_earnings} />
@@ -108,7 +126,9 @@ function PayrollDetailDrawer({
                                 id="other_deductions"
                                 type="number"
                                 value={data.other_deductions}
-                                onChange={(e) => setData("other_deductions", e.target.value)}
+                                onChange={(e) =>
+                                    setData("other_deductions", e.target.value)
+                                }
                                 className="input"
                             />
                             <InputError message={errors.other_deductions} />
@@ -122,7 +142,9 @@ function PayrollDetailDrawer({
                         color="blue"
                         className="mt-4"
                     >
-                        {isEditing ? "Editar detalle de nómina" : "Agregar detalle de nómina"}
+                        {isEditing
+                            ? "Editar detalle de nómina"
+                            : "Agregar detalle de nómina"}
                     </Button>
                 </form>
             </Drawer.Items>

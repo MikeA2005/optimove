@@ -17,7 +17,11 @@ function Index({ auth }) {
     const [isEditOpen, setIsEditOpen] = useState(false); // Controla la visibilidad del drawer de editar
     const [isDeleteOpen, setIsDeleteOpen] = useState(false); // Controla la visibilidad del modal de eliminar
     const [selectedPayrollHeader, setSelectedPayrollHeader] = useState(null); // Hora extra seleccionada para editar o eliminar
-    const formatter = new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 2 }); // Formateador de moneda
+    const formatter = new Intl.NumberFormat("es-CO", {
+        style: "currency",
+        currency: "COP",
+        minimumFractionDigits: 2,
+    }); // Formateador de moneda
 
     // Función para manejar eventos
     const handleEdit = (payrollHeader) => {
@@ -37,29 +41,39 @@ function Index({ auth }) {
             key: "name",
             label: "Nombre",
             render: (payrollHeader) => (
-                <Link href={route('payroll-details.index')} className="underline">
+                <Link
+                    href={route("payroll-details.index", { header_id: payrollHeader.id})}
+                    className="underline"
+                >
                     {payrollHeader.name}
                 </Link>
-            )
+            ),
         },
         // Renderiza la fecha en formato dd-mm-yy
         {
             key: "start_date",
             label: "Fecha de Inicio",
-            render: (payrollHeader) => dayjs(payrollHeader.start_date, "YYYY-MM-DD").format("DD MMMM YYYY")
+            render: (payrollHeader) =>
+                dayjs(payrollHeader.start_date, "YYYY-MM-DD").format(
+                    "DD MMMM YYYY"
+                ),
         },
         // Renderiza la fecha en formato dd-mm-yy
         {
             key: "end_date",
             label: "Fecha de Fin",
-            render: (payrollHeader) => dayjs(payrollHeader.end_date, "YYYY-MM-DD").format("DD MMMM YYYY")
+            render: (payrollHeader) =>
+                dayjs(payrollHeader.end_date, "YYYY-MM-DD").format(
+                    "DD MMMM YYYY"
+                ),
         },
         // Rederiza la base de liquidación a pesos colombianos
         {
             key: "settlement_base",
             label: "Base de Liquidación",
-            render: (payrollHeader) => formatter.format(payrollHeader.settlement_base)
-        }
+            render: (payrollHeader) =>
+                formatter.format(payrollHeader.settlement_base),
+        },
     ];
 
     // Función para manejar el cambio de búsqueda, realiza una petición para filtrar las horas extras
@@ -82,7 +96,11 @@ function Index({ auth }) {
             <PageHeader
                 title="Encabezados de Nómina"
                 breadcrumbs={[
-                    { label: "Inicio", route: route("dashboard"), icon: HiHome },
+                    {
+                        label: "Inicio",
+                        route: route("dashboard"),
+                        icon: HiHome,
+                    },
                     { label: "Encabezados de Nómina" },
                 ]}
                 onAddClick={() => setIsAddOpen(true)}
@@ -99,8 +117,11 @@ function Index({ auth }) {
                 onDelete={handleDelete}
             />
 
-            <Pagination links={payrollHeaders.links} meta={payrollHeaders.meta} />
-                
+            <Pagination
+                links={payrollHeaders.links}
+                meta={payrollHeaders.meta}
+            />
+
             {/* Drawer para agregar Encabezados de Nómina */}
             <PayrollHeaderDrawer
                 isOpen={isAddOpen}
