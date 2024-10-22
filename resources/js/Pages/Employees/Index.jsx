@@ -59,7 +59,7 @@ function Index({ auth }) {
         {
             key: "user",
             label: "Usuario",
-            render: (employee) => employee.user.name,
+            render: (employee) => employee?.user?.name,
         },
     ];
 

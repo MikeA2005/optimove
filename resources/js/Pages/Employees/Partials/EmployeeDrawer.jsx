@@ -40,7 +40,7 @@ export default function EmployeeDrawer({
                 hire_date: employee.hire_date || "",
                 base_salary: employee.base_salary || "",
                 contract_type: employee.contract_type || "",
-                user_id: employee.user.id || "",
+                user_id: employee.user?.id || "",
             });
         }
     }, [employee]);

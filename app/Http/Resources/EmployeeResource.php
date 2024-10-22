@@ -25,7 +25,7 @@ class EmployeeResource extends JsonResource
             'base_salary' => $this->base_salary,
             'transport_allowance' => $this->transport_allowance,
             'contract_type' => $this->contract_type,
-            'user' => new UserResource($this->whenLoaded('user')),
+            'user' => new UserResource($this->whenLoaded('user')) ?? new UserResource((object)['name' => 'No User']),
         ];
     }
 }
