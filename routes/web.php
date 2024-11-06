@@ -7,6 +7,7 @@ use App\Http\Controllers\DisabilityController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\OvertimeController;
+use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollDetailController;
 use App\Http\Controllers\PayrollHeaderController;
 use App\Http\Controllers\ProfileController;
@@ -27,9 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('overtimes', OvertimeController::class)->names('overtimes');
     Route::resource('loans', LoanController::class)->names('loans');
     Route::resource('vacations', VacationController::class)->names('vacations');
-    Route::resource('payroll-headers', PayrollHeaderController::class)->names('payroll-headers');
-    Route::get('/payroll-headers/{payroll_headers}', [PayrollHeaderController::class, 'show'])->name('payroll-headers.show'); 
-    Route::resource('payroll-details', PayrollDetailController::class)->names('payroll-details');
+    Route::resource('payrolls', PayrollController::class)->names('payrolls');
     Route::resource('users', UserController::class)->names('users');
 });
 

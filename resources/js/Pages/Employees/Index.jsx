@@ -34,6 +34,7 @@ function Index({ auth }) {
         TIN: "Termino Indefinido",
         TFI: "Termino Fijo",
         PS: "Prestación de Servicios",
+        OBL: "Obra Labor",
     };
 
     // Columnas para la tabla de empleados

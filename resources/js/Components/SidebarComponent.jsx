@@ -72,7 +72,7 @@ function SidebarComponent({ isOpen }) {
                         </Sidebar.Item>
                     </Sidebar.Collapse>
 
-                    <Sidebar.Item as={Link} icon={ HiCalculator } href={route('payroll-headers.index')}>
+                    <Sidebar.Item as={Link} icon={ HiCalculator } href={route('payrolls.index')}>
                         Payrolls
                     </Sidebar.Item>
 

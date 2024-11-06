@@ -19,7 +19,11 @@ function Index({ auth }) {
     const [isEditOpen, setIsEditOpen] = useState(false); // Controla la visibilidad del drawer de editar
     const [isDeleteOpen, setIsDeleteOpen] = useState(false); // Controla la visibilidad del modal de eliminar
     const [selectedLoan, setSelectedLoan] = useState(null); // Préstamo seleccionado para editar o eliminar
-    const formatter = new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 2 }); // Formateador de moneda
+    const formatter = new Intl.NumberFormat("es-CO", {
+        style: "currency",
+        currency: "COP",
+        minimumFractionDigits: 2,
+    }); // Formateador de moneda
 
     // Función para manejar eventos
     const handleEdit = (loan) => {
@@ -50,7 +54,7 @@ function Index({ auth }) {
         {
             key: "amount",
             label: "Monto del Préstamo",
-            render: (loan) => formatter.format(loan.amount)
+            render: (loan) => formatter.format(loan.amount),
         },
         {
             key: "installments",
@@ -60,12 +64,12 @@ function Index({ auth }) {
         {
             key: "installment_value",
             label: "Valor de Cuota",
-            render: (loan) => formatter.format(loan.installment_value)
+            render: (loan) => formatter.format(loan.installment_value),
         },
         {
             key: "pending_amount",
             label: "Monto Pendiente",
-            render: (loan) => formatter.format(loan.pending_amount)
+            render: (loan) => formatter.format(loan.pending_amount),
         },
     ];
 
@@ -110,16 +114,12 @@ function Index({ auth }) {
 
             {/* Drawer para añadir préstamos */}
             <LoanDrawer
-                isOpen={isAddOpen}
-                onClose={() => setIsAddOpen(false)}
-                employees={employees}
-            />
-
-            {/* Drawer para editar préstamos */}
-            <LoanDrawer
-                isOpen={isEditOpen}
-                onClose={() => setIsEditOpen(false)}
-                loan={selectedLoan}
+                isOpen={isAddOpen || isEditOpen}
+                onClose={() => {
+                    setIsAddOpen(false);
+                    setIsEditOpen(false);
+                }}
+                loan={isEditOpen ? selectedLoan : null}
                 employees={employees}
             />
 

@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\PayrollDetail;
+use App\Models\Payroll;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class PayrollDetailPolicy
+class PayrollPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class PayrollDetailPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, PayrollDetail $payrollDetail): bool
+    public function view(User $user, Payroll $payroll): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class PayrollDetailPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, PayrollDetail $payrollDetail): bool
+    public function update(User $user, Payroll $payroll): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class PayrollDetailPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, PayrollDetail $payrollDetail): bool
+    public function delete(User $user, Payroll $payroll): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class PayrollDetailPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, PayrollDetail $payrollDetail): bool
+    public function restore(User $user, Payroll $payroll): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class PayrollDetailPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, PayrollDetail $payrollDetail): bool
+    public function forceDelete(User $user, Payroll $payroll): bool
     {
         //
     }

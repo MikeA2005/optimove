@@ -221,6 +221,7 @@ export default function EmployeeDrawer({
                                 <option value="TIN">Termino Indefinido</option>
                                 <option value="TFI">Termino Fijo</option>
                                 <option value="PS">Prestación de Servicios</option>
+                                <option value="OBL">Obra Labor</option>
                             </select>
                             <InputError message={errors.contract_type} />
                         </div>
