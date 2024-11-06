@@ -104,18 +104,14 @@ export default function Index({ auth }) {
 
             <Pagination links={disabilities.links} meta={disabilities.meta} />
 
-            {/* Drawer para agregar incapacidad */}
+            {/* Drawer para agregar o editar incapacidad */}
             <DisabilityDrawer
-                isOpen={isAddOpen}
-                onClose={() => setIsAddOpen(false)}
-                employees={employees}
-            />
-
-            {/* Drawer para editar incapacidad */}
-            <DisabilityDrawer
-                isOpen={isEditOpen}
-                onClose={() => setIsEditOpen(false)}
-                disability={selectedDisability}
+                isOpen={isAddOpen || isEditOpen}
+                onClose={() => {
+                    setIsAddOpen(false);
+                    setIsEditOpen(false);
+                }}
+                disability={isEditOpen ? selectedDisability : null}
                 employees={employees}
             />
 

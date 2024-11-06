@@ -103,18 +103,14 @@ function Index({ auth }) {
 
             <Pagination links={employees.links} meta={employees.meta} />
 
-            {/* Drawer para agregar empleado */}
+            {/* Drawer para agregar o editar empleado */}
             <EmployeeDrawer
-                isOpen={isAddOpen}
-                onClose={() => setIsAddOpen(false)}
-                users={users}
-            />
-
-            {/* Drawer para editar empleado */}
-            <EmployeeDrawer
-                isOpen={isEditOpen}
-                onClose={() => setIsEditOpen(false)}
-                employee={selectedEmployee}
+                isOpen={isAddOpen || isEditOpen}
+                onClose={() => {
+                    setIsAddOpen(false);
+                    setIsEditOpen(false);
+                }}
+                employee={isEditOpen ? selectedEmployee : null}
                 users={users}
             />
 

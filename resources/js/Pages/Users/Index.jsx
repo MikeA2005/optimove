@@ -80,17 +80,14 @@ function Index({ auth }) {
 
         <Pagination links={users.links} meta={users.meta} />
 
-        {/* Drawer para agregar usuario */}
+        {/* Drawer para agregar o editar usuario */}
         <UserDrawer
-          isOpen={isAddOpen}
-          onClose={() => setIsAddOpen(false)}
-        />
-
-        {/* Drawer para editar usuario */}
-        <UserDrawer
-          isOpen={isEditOpen}
-          onClose={() => setIsEditOpen(false)}
-          user={selectedUser}
+          isOpen={isAddOpen || isEditOpen}
+          onClose={() => {
+            setIsAddOpen(false);
+            setIsEditOpen(false);
+          }}
+          user={isEditOpen ? selectedUser : null}
         />
 
         {/* Modal para eliminar usuario */}

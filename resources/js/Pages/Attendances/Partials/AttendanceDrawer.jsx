@@ -39,7 +39,7 @@ function AttendanceDrawer({
             });
 
             setSelectedClient(
-                clients.find((c) => c.id === attendance.client.id)
+                clients.data.find((c) => c.id === attendance.client.id)
             );
         }
     }, [attendance, clients]);
@@ -66,7 +66,7 @@ function AttendanceDrawer({
 
     // Maneja el cambio del cliente seleccionado, para cargar las ciudades asociadas
     const handleClientChange = (e) => {
-        const client = clients.find(
+        const client = clients.data.find(
             (c) => c.id === parseInt(e.target.value, 10)
         );
         setSelectedClient(client);
@@ -118,7 +118,7 @@ function AttendanceDrawer({
                                 <option value="" disabled>
                                     Selecciona el usuario...
                                 </option>
-                                {employees.map((employee) => (
+                                {employees.data.map((employee) => (
                                     <option
                                         key={employee.id}
                                         value={employee.id}
@@ -146,7 +146,7 @@ function AttendanceDrawer({
                                 <option value="" disabled>
                                     Selecciona el cliente...
                                 </option>
-                                {clients.map((client) => (
+                                {clients.data.map((client) => (
                                     <option key={client.id} value={client.id}>
                                         {client.company_name}
                                     </option>

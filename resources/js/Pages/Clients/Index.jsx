@@ -85,18 +85,14 @@ export default function Index({ auth }) {
 
             <Pagination links={clients.links} meta={clients.meta} />
 
-            {/* Drawer para agregar cliente */}
+            {/* Drawer para agregar o editar cliente */}
             <ClientDrawer
-                isOpen={isAddOpen}
-                onClose={() => setIsAddOpen(false)}
-                cities={cities}
-            />
-
-            {/* Drawer para editar cliente */}
-            <ClientDrawer
-                isOpen={isEditOpen}
-                onClose={() => setIsEditOpen(false)}
-                client={selectedClient}
+                isOpen={isAddOpen || isEditOpen}
+                onClose={() => {
+                    setIsAddOpen(false);
+                    setIsEditOpen(false);
+                }}
+                client={isEditOpen ? selectedClient : null}
                 cities={cities}
             />
 

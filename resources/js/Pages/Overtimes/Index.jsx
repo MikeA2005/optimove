@@ -100,19 +100,14 @@ function Index({ auth }) {
 
             <Pagination links={overtimes.links} meta={overtimes.meta} />
 
-            {/* Drawer para agregar horas extras */}
+            {/* Drawer para agregar o editar horas extras */}
             <OvertimeDrawer
-                isOpen={isAddOpen}
-                onClose={() => setIsAddOpen(false)}
-                employees={employees}
-                overtimeTypes={overtimeTypes}
-            />
-
-            {/* Drawer para editar horas extras */}
-            <OvertimeDrawer
-                isOpen={isEditOpen}
-                onClose={() => setIsEditOpen(false)}
-                overtime={selectedOvertime}
+                isOpen={isAddOpen || isEditOpen}
+                onClose={() => {
+                    setIsAddOpen(false);
+                    setIsEditOpen(false);
+                }}
+                overtime={isEditOpen ? selectedOvertime : null}
                 employees={employees}
                 overtimeTypes={overtimeTypes}
             />

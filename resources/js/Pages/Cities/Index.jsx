@@ -71,19 +71,16 @@ export default function Index({ auth }) {
 
             <Pagination links={cities.links} meta={cities.meta} />
 
-            {/* Drawer para agregar ciudad */}
+            {/* Drawer para agregar o editar ciudad */}
             <CityDrawer
-                isOpen={isAddOpen}
-                onClose={() => setIsAddOpen(false)}
+                isOpen={isAddOpen || isEditOpen}
+                onClose={() => {
+                    setIsAddOpen(false);
+                    setIsEditOpen(false);
+                }}
+                city={isEditOpen ? selectedCity : null}
             />
 
-            {/* Drawer para editar ciudad */}
-            <CityDrawer
-                isOpen={isEditOpen}
-                onClose={() => setIsEditOpen(false)}
-                city={selectedCity}
-            />
-            
             {/* Modal para eliminar ciudad */}
             <DeleteModal
                 isOpen={isDeleteOpen}

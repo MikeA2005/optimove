@@ -18,7 +18,11 @@ export default function Index({ auth }) {
     const [isEditOpen, setIsEditOpen] = useState(false); // Controla la visibilidad del drawer de editar
     const [isDeleteOpen, setIsDeleteOpen] = useState(false); // Controla la visibilidad del modal de eliminar
     const [selectedAttendance, setSelectedAttendance] = useState(null); // Asistencia seleccionada para editar o eliminar
-    const formatter = new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 2 }); // Formateador de moneda
+    const formatter = new Intl.NumberFormat("es-CO", {
+        style: "currency",
+        currency: "COP",
+        minimumFractionDigits: 2,
+    }); // Formateador de moneda
 
     // Funciones para manejar eventos
     const handleEdit = (attendance) => {
@@ -63,7 +67,7 @@ export default function Index({ auth }) {
         {
             key: "daily_value",
             label: "Valor Diario",
-            render: (attendance) => formatter.format(attendance.daily_value)
+            render: (attendance) => formatter.format(attendance.daily_value),
         },
     ];
 
@@ -106,21 +110,16 @@ export default function Index({ auth }) {
 
             <Pagination links={attendances.links} meta={attendances.meta} />
 
-            {/* Drawer para añadir asistencia */}
+            {/* Drawer para añadir o editar asistencia */}
             <AttendanceDrawer
-                isOpen={isAddOpen}
-                onClose={() => setIsAddOpen(false)}
-                clients={clients.data}
-                employees={employees.data}
-            />
-
-            {/* Drawer para editar asistencia */}
-            <AttendanceDrawer
-                isOpen={isEditOpen}
-                onClose={() => setIsEditOpen(false)}
-                attendance={selectedAttendance}
-                clients={clients.data}
-                employees={employees.data}
+                isOpen={isAddOpen || isEditOpen}
+                onClose={() => {
+                    setIsAddOpen(false);
+                    setIsEditOpen(false);
+                }}
+                attendance={isEditOpen ? selectedAttendance : null}
+                clients={clients}
+                employees={employees}
             />
 
             {/* Modal para eliminar asistencia */}
