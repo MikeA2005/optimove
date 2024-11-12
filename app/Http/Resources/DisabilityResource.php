@@ -21,7 +21,6 @@ class DisabilityResource extends JsonResource
             'end_date' => $this->end_date,
             'type' => $this->type,
             'description' => $this->description,
-            'daily_value' => $this->daily_value,
         ];
     }
 }

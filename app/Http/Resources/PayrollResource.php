@@ -15,6 +15,7 @@ class PayrollResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'worked_days' => $this->worked_days,

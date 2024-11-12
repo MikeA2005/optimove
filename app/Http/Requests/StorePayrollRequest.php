@@ -24,13 +24,13 @@ class StorePayrollRequest extends FormRequest
         return [
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date', 
-            'worked_days' => 'required|integer|min:0',
-            'earned_salary' => 'required|numeric|min:0',
+            'worked_days' => 'nullable|integer|min:0',
+            'earned_salary' => 'nullable|numeric|min:0',
             'transport_allowance' => 'nullable|numeric|min:0',
             'disability_value' => 'nullable|numeric|min:0',
             'overtime_value' => 'nullable|numeric|min:0',
             'others_earnings' => 'nullable|numeric|min:0',
-            'total_earnings' => 'required|numeric|min:0',
+            'total_earnings' => 'nullable|numeric|min:0',
             'health_contribution' => 'nullable|numeric|min:0',
             'pension_contribution' => 'nullable|numeric|min:0',
             'loan_payments' => 'nullable|numeric|min:0',
@@ -38,8 +38,8 @@ class StorePayrollRequest extends FormRequest
             'responsabilities' => 'nullable|numeric|min:0',
             'payroll_deductions' => 'nullable|numeric|min:0',
             'others_deductions' => 'nullable|numeric|min:0',
-            'total_deductions' => 'required|numeric|min:0',
-            'net_pay' => 'required|numeric|min:0',
+            'total_deductions' => 'nullable|numeric|min:0',
+            'net_pay' => 'nullable|numeric|min:0',
             'employee_id' => 'required|exists:employees,id',
         ];
     }

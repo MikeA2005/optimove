@@ -17,7 +17,6 @@ function DisabilityDrawer({ isOpen, onClose, disability = null, employees }) {
         end_date: "",
         type: "",
         description: "",
-        daily_value: "",
     });
 
     // Efecto para cargar los datos de la incapacidad en el formulario si se está editando
@@ -29,7 +28,6 @@ function DisabilityDrawer({ isOpen, onClose, disability = null, employees }) {
                 end_date: disability.end_date || "",
                 type: disability.type || "",
                 description: disability.description || "",
-                daily_value: disability.daily_value || "",
             });
         }
     }, [disability]);
@@ -156,23 +154,6 @@ function DisabilityDrawer({ isOpen, onClose, disability = null, employees }) {
                                 className="input"
                             />
                             <InputError message={errors.description} />
-                        </div>
-
-                        {/* Valor Diario */}
-                        <div>
-                            <label htmlFor="daily_value" className="label">
-                                Valor Diario
-                            </label>
-                            <input
-                                type="text"
-                                id="daily_value"
-                                value={data.daily_value}
-                                onChange={(e) =>
-                                    setData("daily_value", e.target.value)
-                                }
-                                className="input"
-                            />
-                            <InputError message={errors.daily_value} />
                         </div>
 
                         {/* Botón para guardar o actualizar el incapacidad */}

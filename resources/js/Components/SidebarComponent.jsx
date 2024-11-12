@@ -53,40 +53,37 @@ function SidebarComponent({ isOpen }) {
                             
                     <Sidebar.Collapse icon={HiCollection} label="RRHH" open={isRrrhOpen} aria-label='Recursos Humanos'>
                         <Sidebar.Item as={Link} href={route('employees.index')} active={route().current('employees.index')}>
-                            Employees
+                            Empleados
                         </Sidebar.Item>
                         <Sidebar.Item as={Link} href={route('attendances.index')} active={route().current('attendances.index')}>
-                            Attendances
+                            Asistencias
                         </Sidebar.Item>
                         <Sidebar.Item as={Link} href={route('disabilities.index')} active={route().current('disabilities.index')}>
-                            Disabilities
+                            Incapacidades
                         </Sidebar.Item>
                         <Sidebar.Item as={Link} href={route('overtimes.index')} active={route().current('overtimes.index')}>
-                            Overtimes
+                            Horas extra
                         </Sidebar.Item>
                         <Sidebar.Item as={Link} href={route('loans.index')} active={route().current('loans.index')}>
-                            Loans
-                        </Sidebar.Item>
-                        <Sidebar.Item as={Link} href={route('vacations.index')} active={route().current('vacations.index')}>
-                            Vacations
+                            Prestamos
                         </Sidebar.Item>
                     </Sidebar.Collapse>
 
                     <Sidebar.Item as={Link} icon={ HiCalculator } href={route('payrolls.index')}>
-                        Payrolls
+                        Nómina
                     </Sidebar.Item>
 
                     <Sidebar.Collapse icon={ HiBriefcase } label="Operations" open={isOperationsOpen} aria-label='Operaciones'>
                         <Sidebar.Item as={Link} href={route('clients.index')} active={route().current('clients.index')}>
-                            Clients
+                            Clientes
                         </Sidebar.Item>
                         <Sidebar.Item as={Link} href={route('cities.index')} active={route().current('cities.index')}>
-                            Cities
+                            Ciudades
                         </Sidebar.Item>
                     </Sidebar.Collapse>
 
                     <Sidebar.Item as={Link} href={route('users.index')} active={route().current('users.index')} icon={HiUsers}>
-                        Users
+                        Usuarios
                     </Sidebar.Item>
                 </Sidebar.ItemGroup>
             </Sidebar.Items>

@@ -27,7 +27,6 @@ class UpdateDisabilityRequest extends FormRequest
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'type' => 'required|string|max:50',
             'description' => 'nullable|string|max:255',
-            'daily_value' => 'required|numeric|min:0'
         ];
     }
 }

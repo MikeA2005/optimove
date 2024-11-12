@@ -57,12 +57,6 @@ export default function Index({ auth }) {
                 dayjs(disability.end_date, "YYYY-MM-DD").format("DD MMMM YYYY"),
         },
         { key: "type", label: "Tipo de Incapacidad" },
-        // Renderiza el valor diario de la incapacidad (decimal a pesos colombianos)
-        {
-            key: "daily_value",
-            label: "Valor Diario",
-            render: (disability) => formatter.format(disability.daily_value),
-        },
     ];
 
     // Función para manejar el cambio en la búsqueda, realiza una petición para filtrar las incapacidades

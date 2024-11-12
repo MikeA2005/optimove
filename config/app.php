@@ -125,6 +125,7 @@ return [
 
     'constants' => [
         'SMMLV' => 1300000,
+        'WEEKLY_HOURS' => 40,
         'TRANSPORT_ALLOWANCE' => 162000,
     ],
 ];

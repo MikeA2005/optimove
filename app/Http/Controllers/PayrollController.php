@@ -52,11 +52,8 @@ class PayrollController extends Controller
      */
     public function store(StorePayrollRequest $request)
     {
-        $validated = $request->validated();
-        $validated['worked_days'] = 15;
-
         try {
-            Payroll::create($validated);
+            Payroll::create($request->validated());
             return redirect()->route('payrolls.index')->with('flash.success', 'Payroll created successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('flash.error', 'Error creating payroll.');

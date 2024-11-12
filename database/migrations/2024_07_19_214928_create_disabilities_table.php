@@ -19,7 +19,6 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->string('type', 50);
             $table->string('description', 255)->nullable();
-            $table->decimal('daily_value', 10, 2);
 
             // Relationships
             $table->foreignId('employee_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
