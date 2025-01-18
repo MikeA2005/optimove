@@ -23,7 +23,7 @@ return new class extends Migration
             $table->date('hire_date');
 
             // Employment information
-            $table->decimal('base_salary', 11, 2);
+            $table->decimal('base_salary', 11, 2)->nullable();
             $table->decimal('transport_allowance', 10, 2);
             $table->string('contract_type', 50);
 

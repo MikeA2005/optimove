@@ -24,11 +24,22 @@ class UpdateEmployeeRequest extends FormRequest
         // Obtener el salario base del request
         $baseSalary = $this->input('base_salary');
 
-        // Si el salario base es mayor a dos salarios mínimos, la asignación de transporte es 0
-        if ($baseSalary > $twoSMMLV) {
-            $this->merge(['transport_allowance' => 0]);
+        // Obtener el tipo de contrato del request
+        $contractType = $this->input('contract_type');
+
+        if ($contractType === "IND") {
+            // Si el contrato es independiente, se asigna 0 al salario base
+            $this->merge(['base_salary' => 0]);
         } else {
-            $this->merge(['transport_allowance' => config('app.constants.TRANSPORT_ALLOWANCE')]);
+            // Si el contrato es dependiente, se asigna el salario base introducido o el valor predeterminado
+            $this->merge(['base_salary' => $baseSalary]);
+
+            // Se verifica si el salario base es mayor a dos salarios mínimos
+            if ($baseSalary > $twoSMMLV) {
+                $this->merge(['transport_allowance' => 0]);
+            } else {
+                $this->merge(['transport_allowance' => config('app.constants.TRANSPORT_ALLOWANCE')]);
+            }
         }
     }
 
@@ -46,7 +57,7 @@ class UpdateEmployeeRequest extends FormRequest
             'document_number' => ['required', 'string', 'max:50', Rule::unique('employees')->ignore($this->employee)],
             'birth_date' => ['required', 'date', 'before:hire_date'],
             'hire_date' => ['required', 'date', 'before_or_equal:today'],
-            'base_salary' => ['required', 'numeric', 'min:0'],
+            'base_salary' => ['nullable', 'numeric', 'min:0'],
             'transport_allowance' => ['required', 'numeric', 'min:0'],
             'contract_type' => ['required', 'string', 'max:50'],
             'user_id' => ['nullable', 'exists:users,id'],

@@ -69,7 +69,7 @@ function SidebarComponent({ isOpen }) {
                         </Sidebar.Item>
                     </Sidebar.Collapse>
 
-                    <Sidebar.Item as={Link} icon={ HiCalculator } href={route('payrolls.index')}>
+                    <Sidebar.Item as={Link} icon={ HiCalculator } href={route('payroll-headers.index')} active={route().current('payroll-headers.index')}>
                         Nómina
                     </Sidebar.Item>
 

@@ -28,7 +28,7 @@ class EmployeeController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10)
             ->withQueryString();
-        
+
         return Inertia::render('Employees/Index', [
             'employees' => EmployeeResource::collection($employees),
             'users' => UserResource::collection(User::all()),

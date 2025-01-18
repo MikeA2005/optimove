@@ -124,8 +124,8 @@ return [
     ],
 
     'constants' => [
-        'SMMLV' => 1300000,
+        'SMMLV' => 1423500,
         'WEEKLY_HOURS' => 40,
-        'TRANSPORT_ALLOWANCE' => 162000,
+        'TRANSPORT_ALLOWANCE' => 200000,
     ],
 ];

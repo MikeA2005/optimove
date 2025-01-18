@@ -31,9 +31,8 @@ function Index({ auth }) {
 
     // Tipos de contrato, para renderizar
     const contractTypeLabels = {
-        TIN: "Termino Indefinido",
-        TFI: "Termino Fijo",
-        PS: "Prestación de Servicios",
+        IND: "Independiente",
+        DEP: "Dependiente",
         OBL: "Obra Labor",
     };
 

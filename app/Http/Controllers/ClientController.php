@@ -49,6 +49,14 @@ class ClientController extends Controller
         }
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show()
+    {
+        //
+    }
+
     public function edit(Client $client)
     {
         $cities = City::all();

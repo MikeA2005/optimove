@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Payroll;
+use App\Models\PayrollDetail;
+use App\Observers\PayrollDetailObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        PayrollDetail::observe(PayrollDetailObserver::class);
     }
 }

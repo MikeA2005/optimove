@@ -16,7 +16,6 @@ return new class extends Migration
 
             // Attendance information
             $table->date('date');
-            $table->decimal('daily_value', 10, 2); // Verificar si es necesario
 
             // Relationships
             $table->foreignId('employee_id')->constrained()->onDelete('cascade')->onUpdate('cascade');

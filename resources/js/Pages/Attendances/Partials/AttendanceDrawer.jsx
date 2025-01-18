@@ -179,23 +179,6 @@ function AttendanceDrawer({
                                 ))}
                             </select>
                         </div>
-
-                        {/* Valor del día de la asistencia */}
-                        <div>
-                            <label htmlFor="daily_value" className="label">
-                                Valor del Día
-                            </label>
-                            <input
-                                type="text"
-                                id="daily_value"
-                                value={data.daily_value}
-                                onChange={(e) =>
-                                    setData("daily_value", e.target.value)
-                                }
-                                className="input"
-                            />
-                            <InputError message={errors.daily_value} />
-                        </div>
                     </div>
 
                     {/* Botón para guardar o actualizar la asistencia */}

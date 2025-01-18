@@ -3,7 +3,7 @@ import { HiOutlinePencilAlt, HiOutlinePlus } from "react-icons/hi";
 import InputError from "@/Components/Default/InputError";
 import { useForm } from "@inertiajs/react";
 import { Button, Drawer } from "flowbite-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CustomDatepicker from "@/Components/CustomDatepicker";
 
 // Componente EmployeeDrawer para gestionar los empleados
@@ -185,22 +185,6 @@ export default function EmployeeDrawer({
                             <InputError message={errors.hire_date} />
                         </div>
 
-                        {/* Salario Base */}
-                        <div>
-                            <label htmlFor="base_salary" className="label">
-                                Salario Base
-                            </label>
-                            <input
-                                type="number"
-                                id="base_salary"
-                                value={data.base_salary}
-                                onChange={(e) =>
-                                    setData("base_salary", e.target.value)
-                                }
-                                className="input"
-                            />
-                            <InputError message={errors.base_salary} />
-                        </div>
 
                         {/* Tipo de Contrato */}
                         <div>
@@ -218,13 +202,31 @@ export default function EmployeeDrawer({
                                 <option value="" disabled>
                                     Selecciona el tipo de contrato...
                                 </option>
-                                <option value="TIN">Termino Indefinido</option>
-                                <option value="TFI">Termino Fijo</option>
-                                <option value="PS">Prestación de Servicios</option>
-                                <option value="OBL">Obra Labor</option>
+                                <option value="IND">Independiente</option>
+                                <option value="DEP">Dependiente</option>
+                                <option value="OBL">Obra labor</option>
                             </select>
                             <InputError message={errors.contract_type} />
                         </div>
+                        
+                        {/* Salario Base */}
+                        { data.contract_type === "DEP" && (
+                            <div>
+                                <label htmlFor="base_salary" className="label">
+                                    Salario Base
+                                </label>
+                                <input
+                                    type="number"
+                                    id="base_salary"
+                                    value={data.base_salary}
+                                    onChange={(e) =>
+                                        setData("base_salary", e.target.value)
+                                    }
+                                    className="input"
+                                />
+                                <InputError message={errors.base_salary} />
+                            </div>
+                        )}
 
                         {/* Usuario Asociado */}
                         <div>

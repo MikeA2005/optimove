@@ -35,14 +35,4 @@ class Employee extends Model
     {
         return $this->hasMany(Loan::class);
     }
-
-    public function vacations()
-    {
-        return $this->hasMany(Vacation::class);
-    }
-
-    public function payrolls()
-    {
-        return $this->hasMany(Payroll::class);
-    }
 }
