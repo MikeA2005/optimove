@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             OvertimeTypeSeeder::class,
             PayrollHeaderSeeder::class,
             CitySeeder::class,
-            ShiftTypeSeeder::class,
         ]);
     }
 }
