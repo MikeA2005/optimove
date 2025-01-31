@@ -59,7 +59,6 @@ class PayrollDetail extends Model
         $this->overtime_value = $this->calculateOvertimeValue();
         // Calcular total de devengados
         $this->total_earnings = $this->earned_salary + $this->transport_allowance + $this->disability_value + $this->overtime_value + $this->others_earnings;
-
         // Calcular aportes a salud y pensión
         $this->health_contribution = ($this->total_earnings - $this->transport_allowance) * self::HEALTH_PERCENTAGE;
         $this->pension_contribution = ($this->total_earnings - $this->transport_allowance) * self::PENSION_PERCENTAGE;
@@ -69,7 +68,6 @@ class PayrollDetail extends Model
         $this->payroll_deductions = 0;
         // Calcular total de deducciones
         $this->total_deductions = $this->health_contribution + $this->pension_contribution + $this->loan_payments + $this->funeral_plan + $this->responsabilities + $this->payroll_deductions + $this->others_deductions;
-
         // Calcular neto a pagar
         $this->net_pay = $this->total_earnings - $this->total_deductions;
     }
@@ -88,9 +86,21 @@ class PayrollDetail extends Model
 
     private function calculateWorkedDays()
     {
-        return $this->employee->attendances
-            ->whereBetween('date', [$this->payrollHeader->start_date, $this->payrollHeader->end_date])
+        $startDate = Carbon::parse($this->payrollHeader->start_date);
+        $endDate = Carbon::parse($this->payrollHeader->end_date);
+
+        // Cuenta los días trabajados (registrados en attendances)
+        $workedDays = $this->employee->attendances
+            ->whereBetween('date', [$startDate, $endDate])
             ->count();
+
+        // Cuenta los fines de semana en el periodo
+        $weekendDays = $startDate->diffInDaysFiltered(function (Carbon $date) {
+            return $date->isWeekend();
+        }, $endDate);
+
+        // Total de días trabajados + fines de semana
+        return $workedDays + $weekendDays;
     }
 
     private function calculateDisabilityValue()
@@ -148,7 +158,7 @@ class PayrollDetail extends Model
             if ($loan->pending_amount > 0) {
                 $loanDiscount = $this->calculateLoanDiscount($loan);
                 $totalLoanDiscount += $loanDiscount;
-    
+
                 // Actualizar el saldo del préstamo
                 $loan->pending_amount -= $loanDiscount;
                 $loan->save();

@@ -13,24 +13,18 @@ class OvertimeTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        OvertimeType::factory()->create([
-            'type_name' => 'Hora extra diurna',
-            'surcharge_percentage' => 25,
-        ]);
+        $overtimeTypes = [
+            ['type_name' => 'HORA EXTRA DIURNA', 'surcharge_percentage' => 25],
+            ['type_name' => 'HORA EXTRA NOCTURNA', 'surcharge_percentage' => 75],
+            ['type_name' => 'HORA EXTRA DIURNA DOMINICAL O FESTIVA', 'surcharge_percentage' => 100],
+            ['type_name' => 'HORA EXTRA NOCTURNA DOMINICAL O FESTIVA', 'surcharge_percentage' => 150],
+            ['type_name' => 'RECARGO NOCTURNO', 'surcharge_percentage' => 35],
+            ['type_name' => 'RECARGO DOMINICAL O FESTIVO', 'surcharge_percentage' => 75],
+            ['type_name' => 'RECARGO NOCTURNO DOMINICAL O FESTIVO', 'surcharge_percentage' => 110],
+        ];
 
-        OvertimeType::factory()->create([
-            'type_name' => 'Hora extra nocturna',
-            'surcharge_percentage' => 75,
-        ]);
-
-        OvertimeType::factory()->create([
-            'type_name' => 'Hora extra diurna dominical o festiva',
-            'surcharge_percentage' => 100,
-        ]);
-
-        OvertimeType::factory()->create([
-            'type_name' => 'Hora extra nocturna dominical o festiva',
-            'surcharge_percentage' => 150,
-        ]);
+        foreach ($overtimeTypes as $overtimeType) {
+            OvertimeType::create($overtimeType);
+        }
     }
 }

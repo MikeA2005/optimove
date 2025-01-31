@@ -33,7 +33,6 @@ class StoreAttendanceRequest extends FormRequest
             'client_id' => 'required|integer|exists:clients,id',
             'city_id' => 'required|integer|exists:cities,id',
             'date' => 'required|date|date_equals:today',
-            'daily_value' => 'required|numeric|min:0',
         ];
     }
 }

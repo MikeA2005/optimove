@@ -13,15 +13,15 @@ function AttendanceDrawer({
     attendance = null, // Datos de la asistencia, null si no se está editando
     employees, // Lista de empleados para seleccionar
     clients, // Lista de clientes para seleccionar
+    shiftTypes, // Lista de tipos de turno para seleccionar
 }) {
     const isEditing = attendance !== null; // Determina si se está editando una asistencia existente
     const [selectedClient, setSelectedClient] = useState(null); // Estado para el cliente seleccionado
     const [selectedDate, setSelectedDate] = useState(new Date()); // Estado para la fecha seleccionada
-
+    
     // useForm de Inertia.js para manejar el formulario
     const { data, setData, errors, post, put, processing, reset } = useForm({
         date: "",
-        daily_value: "",
         employee_id: "",
         client_id: "",
         city_id: "",
@@ -32,7 +32,6 @@ function AttendanceDrawer({
         if (attendance && isEditing) {
             setData({
                 date: attendance.date || "",
-                daily_value: attendance.daily_value || "",
                 employee_id: attendance.employee.id || "",
                 client_id: attendance.client.id || "",
                 city_id: attendance.city.id || "",

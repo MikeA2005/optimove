@@ -24,7 +24,7 @@ class PayrollDetailController extends Controller
                 $query->where('employee_id', $request->input('employee_id'));
             })
             ->orderBy('created_at', 'desc')
-            ->paginate(10)
+            ->paginate(15)
             ->withQueryString();
         
         return Inertia::render('Payrolls/Details/Index', [
