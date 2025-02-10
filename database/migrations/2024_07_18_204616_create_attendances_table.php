@@ -25,10 +25,6 @@ return new class extends Migration
             $table->foreignId('task_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
-
-            // Unique constraint to avoid duplicate attendances for the same employee on the same day (date)
-            $table->unique(['employee_id', 'date']);
-            
         });
     }
 
