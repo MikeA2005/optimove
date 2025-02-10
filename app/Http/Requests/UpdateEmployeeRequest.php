@@ -30,6 +30,7 @@ class UpdateEmployeeRequest extends FormRequest
         if ($contractType === "IND") {
             // Si el contrato es independiente, se asigna 0 al salario base
             $this->merge(['base_salary' => 0]);
+            $this->merge(['transport_allowance' => 0]);
         } else {
             // Si el contrato es dependiente, se asigna el salario base introducido o el valor predeterminado
             $this->merge(['base_salary' => $baseSalary]);

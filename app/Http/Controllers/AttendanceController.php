@@ -8,8 +8,10 @@ use App\Http\Requests\UpdateAttendanceRequest;
 use App\Http\Resources\AttendanceResource;
 use App\Http\Resources\ClientResource;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\ShiftTypeResource;
 use App\Models\Client;
 use App\Models\Employee;
+use App\Models\ShiftType;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -20,7 +22,7 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
-        $attendances = Attendance::with('employee', 'client', 'city')
+        $attendances = Attendance::with('employee', 'client', 'city', 'shiftType', 'task')
             ->when($request->has('date'), function ($query) use ($request) {
                 $query->where('date', 'like', '%' . $request->input('date') . '%');
             })
@@ -37,12 +39,13 @@ class AttendanceController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-            $clients = Client::with('cities')->get();
+            $clients = Client::with('cities', 'tasks')->get();
 
         return Inertia::render('Attendances/Index', [
             'attendances' => AttendanceResource::collection($attendances),
             'clients' => ClientResource::collection($clients),
             'employees' => EmployeeResource::collection(Employee::all()),
+            'shiftTypes' => ShiftTypeResource::collection(ShiftType::all()),
         ]);
     }
 
@@ -80,13 +83,13 @@ class AttendanceController extends Controller
      */
     public function edit(Attendance $attendance)
     {
-        $employees = Employee::all();
         $clients = Client::with('cities')->get();
 
         return Inertia::render('Attendances/Index', [
             'attendance' => new AttendanceResource($attendance),
-            'employees' => EmployeeResource::collection($employees),
+            'employees' => EmployeeResource::collection(Employee::all()),
             'clients' => ClientResource::collection($clients),
+            'shiftTypes' => ShiftTypeResource::collection(ShiftType::all()),
         ]);
     }
 

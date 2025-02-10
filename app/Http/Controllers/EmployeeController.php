@@ -9,7 +9,9 @@ use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Laravel\Prompts\Prompt;
 
 class EmployeeController extends Controller
 {

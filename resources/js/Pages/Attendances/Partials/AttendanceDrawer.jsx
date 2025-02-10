@@ -13,6 +13,7 @@ function AttendanceDrawer({
     attendance = null, // Datos de la asistencia, null si no se está editando
     employees, // Lista de empleados para seleccionar
     clients, // Lista de clientes para seleccionar
+    shiftTypes, // Lista de tipos de turno para seleccionar
 }) {
     const isEditing = attendance !== null; // Determina si se está editando una asistencia existente
     const [selectedClient, setSelectedClient] = useState(null); // Estado para el cliente seleccionado
@@ -21,10 +22,11 @@ function AttendanceDrawer({
     // useForm de Inertia.js para manejar el formulario
     const { data, setData, errors, post, put, processing, reset } = useForm({
         date: "",
-        daily_value: "",
         employee_id: "",
         client_id: "",
         city_id: "",
+        shift_type_id: "",
+        task_id: "",
     });
 
     // Efecto para cargar los datos de la asistencia en el formulario si se está editando
@@ -32,10 +34,11 @@ function AttendanceDrawer({
         if (attendance && isEditing) {
             setData({
                 date: attendance.date || "",
-                daily_value: attendance.daily_value || "",
                 employee_id: attendance.employee.id || "",
                 client_id: attendance.client.id || "",
                 city_id: attendance.city.id || "",
+                shift_type_id: attendance.shiftType.id || "",
+                task_id: attendance.task.id || "",
             });
 
             setSelectedClient(
@@ -75,6 +78,20 @@ function AttendanceDrawer({
             city_id: "",
             client_id: e.target.value,
         });
+    };
+
+    const shouldShowTaskSelect = () => {
+        const employee = employees.data.find(
+            (emp) => emp.id === parseInt(data.employee_id, 10)
+        );
+        return employee?.contract_type === "OBL";
+    };
+
+    const shouldShowShiftTypeSelect = () => {
+        const employee = employees.data.find(
+            (emp) => emp.id === parseInt(data.employee_id, 10)
+        );
+        return employee?.contract_type === "IND";
     };
 
     // Renderiza el Drawer con el formulario de asistencia
@@ -178,7 +195,68 @@ function AttendanceDrawer({
                                     </option>
                                 ))}
                             </select>
+                            <InputError message={errors.city_id} />
                         </div>
+
+                        {/* Tipo de turno */}
+                        {shouldShowShiftTypeSelect() && (
+                            <div>
+                                <label
+                                    htmlFor="shift_type_id"
+                                    className="label"
+                                >
+                                    Tipo de turno
+                                </label>
+                                <select
+                                    id="shift_type_id"
+                                    value={data.shift_type_id}
+                                    onChange={(e) =>
+                                        setData("shift_type_id", e.target.value)
+                                    }
+                                    className="input"
+                                >
+                                    <option value="" disabled>
+                                        Selecciona el tipo de turno...
+                                    </option>
+                                    {shiftTypes.data.map((shiftType) => (
+                                        <option
+                                            key={shiftType.id}
+                                            value={shiftType.id}
+                                        >
+                                            {shiftType.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <InputError message={errors.shift_type_id} />
+                            </div>
+                        )}
+
+                        {/* Tipo de tarea */}
+                        {shouldShowTaskSelect() && (
+                            <div>
+                                <label htmlFor="task_id" className="label">
+                                    Tipo de tarea
+                                </label>
+                                <select
+                                    id="task_id"
+                                    value={data.task_id}
+                                    onChange={(e) =>
+                                        setData("task_id", e.target.value)
+                                    }
+                                    className="input"
+                                >
+                                    <option value="" disabled>
+                                        Selecciona el tipo de tarea...
+                                    </option>
+                                    {selectedClient?.tasks?.map((task) => (
+                                        <option key={task.id} value={task.id}>
+                                            {task.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <InputError message={errors.task_id} />
+                            </div>
+                        )}
                     </div>
 
                     {/* Botón para guardar o actualizar la asistencia */}

@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 // Componente Index para la página de asistencias
 export default function Index({ auth }) {
     // Estado y propiedades iniciales
-    const { attendances, employees, clients } = usePage().props; // Datos de asistencias, empleados y clientes
+    const { attendances, employees, clients, shiftTypes } = usePage().props; // Datos de asistencias, empleados y clientes
     const [isAddOpen, setIsAddOpen] = useState(false); // Controla la visibilidad del drawer de añadir
     const [isEditOpen, setIsEditOpen] = useState(false); // Controla la visibilidad del drawer de editar
     const [isDeleteOpen, setIsDeleteOpen] = useState(false); // Controla la visibilidad del modal de eliminar
@@ -62,12 +62,6 @@ export default function Index({ auth }) {
             key: "city_id",
             label: "Ciudad",
             render: (attendance) => attendance.city.city_name,
-        },
-        // Renderiza el valor diario de la asistencia a pesos colombianos
-        {
-            key: "daily_value",
-            label: "Valor Diario",
-            render: (attendance) => formatter.format(attendance.daily_value),
         },
     ];
 
@@ -120,6 +114,7 @@ export default function Index({ auth }) {
                 attendance={isEditOpen ? selectedAttendance : null}
                 clients={clients}
                 employees={employees}
+                shiftTypes={shiftTypes}
             />
 
             {/* Modal para eliminar asistencia */}

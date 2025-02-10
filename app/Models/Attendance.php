@@ -26,4 +26,14 @@ class Attendance extends Model
     {
         return $this->belongsTo(City::class);
     }
+
+    public function shiftType()
+    {
+        return $this->belongsTo(ShiftType::class);
+    }
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
 }

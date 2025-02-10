@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreignId('employee_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('client_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('city_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('shift_type_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('task_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
 

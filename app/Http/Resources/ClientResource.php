@@ -24,9 +24,9 @@ class ClientResource extends JsonResource
                 return CityResource::collection($this->cities);
             }),
 
-            // Additional fields as needed
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'tasks' => $this->whenLoaded('tasks', function () {
+                return TaskResource::collection($this->tasks);
+            }),
         ];
     }
 }

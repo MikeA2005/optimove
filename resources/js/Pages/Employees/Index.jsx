@@ -75,6 +75,7 @@ function Index({ auth }) {
         );
     };
 
+
     // Renderiza la página de empleados
     return (
         <AuthenticatedLayout user={auth.user}>
