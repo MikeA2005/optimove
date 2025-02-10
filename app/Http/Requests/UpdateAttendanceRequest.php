@@ -23,15 +23,7 @@ class UpdateAttendanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'employee_id' => [
-                'required',
-                'integer',
-                'exists:employees,id',
-                Rule::unique('attendances')->ignore($this->attendance, 'id')->where(function ($query) { // <-- Change here
-                    return $query->where('employee_id', $this->employee_id)
-                        ->whereDate('date', $this->date);
-                }),
-            ],
+            'employee_id' => 'required|integer|exists:employees,id',
             'client_id' => 'required|integer|exists:clients,id',
             'city_id' => 'required|integer|exists:cities,id',
             'shift_type_id' => 'nullable|integer|exists:shift_types,id',
