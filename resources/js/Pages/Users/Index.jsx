@@ -29,6 +29,8 @@ function Index({ auth }) {
         setIsDeleteOpen(true); // Abre el modal de eliminar
     };
 
+    console.log(users);
+    
     // Columnas para la tabla de usuarios
     const columns = [
         {

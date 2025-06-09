@@ -25,7 +25,7 @@ class StoreUserRequest extends FormRequest
             'name' => 'required|min:3|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
-            'role' => 'required|exists:roles,name',
+            'role' => 'required|in:admin, rrhh, operaciones',
         ];
     }
 }
