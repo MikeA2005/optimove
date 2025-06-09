@@ -71,6 +71,11 @@ function Index({ auth }) {
             label: "Monto Pendiente",
             render: (loan) => formatter.format(loan.pending_amount),
         },
+        {
+            key: "active",
+            label: "Estado",
+            render: (loan) => (loan.active ? "Activo" : "Inactivo"),
+        }
     ];
 
     // Función para manejar el cambio de búsqueda, realiza una petición para filtrar los préstamos

@@ -3,7 +3,7 @@ import { Sidebar } from 'flowbite-react'
 import { useEffect, useState } from 'react';
 import { HiChartPie, HiUsers, HiCollection, HiCalculator, HiBriefcase } from 'react-icons/hi';
 
-function SidebarComponent({ isOpen }) {        
+function SidebarComponent({ isOpen, user }) {        
     const [isRrrhOpen, setIsRrrhOpen] = useState(false); // Establece el estado de la sección de RRHH
     const [isOperationsOpen, setIsOperationsOpen] = useState(false); // Establece el estado de la sección de Operaciones
 
@@ -47,9 +47,11 @@ function SidebarComponent({ isOpen }) {
         >
             <Sidebar.Items>
                 <Sidebar.ItemGroup>
-                    <Sidebar.Item as={Link} icon={HiChartPie} href={route('dashboard')} active={route().current('dashboard')}>
-                            Dashboard
-                    </Sidebar.Item>
+                    { user.role === 'admin' && (
+                        <Sidebar.Item as={Link} icon={HiChartPie} href={route('dashboard')} active={route().current('dashboard')}>
+                                Dashboard
+                        </Sidebar.Item>
+                    )}
                             
                     <Sidebar.Collapse icon={HiCollection} label="RRHH" open={isRrrhOpen} aria-label='Recursos Humanos'>
                         <Sidebar.Item as={Link} href={route('employees.index')} active={route().current('employees.index')}>

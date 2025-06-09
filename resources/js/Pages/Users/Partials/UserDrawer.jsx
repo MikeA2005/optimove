@@ -14,6 +14,7 @@ export default function UserDrawer({ isOpen, onClose, user = null }) {
         name: "",
         email: "",
         password: "",
+        role: "",
     });
 
     // useEffect para establecer los datos del usuario
@@ -22,6 +23,7 @@ export default function UserDrawer({ isOpen, onClose, user = null }) {
             setData({
                 name: user.name,
                 email: user.email,
+                role: user.role,
             });
         }
     }, [user]);
@@ -104,6 +106,24 @@ export default function UserDrawer({ isOpen, onClose, user = null }) {
                                 autoComplete="new-password"
                             />
                             <InputError message={errors.password} />
+                        </div>
+                        <div>
+                            <label htmlFor="role" className="label">
+                                Rol
+                            </label>
+                            <select
+                                id="role"
+                                value={data.role}
+                                onChange={(e) => setData("role", e.target.value)}
+                                className="input"
+                                autoComplete="role"
+                            >
+                                <option value="" disabled>Seleccione un rol...</option>
+                                <option value="admin">Administrador</option>
+                                <option value="rrhh">Recuersos Humanos</option>
+                                <option value="operaciones">Coordinadores</option>
+                            </select>
+                            <InputError message={errors.role} />
                         </div>
 
                         {/* Botón para guardar o actualizar el usuario */}

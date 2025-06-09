@@ -20,7 +20,7 @@ export default function Authenticated({ user, children }) {
                 sidebarOpen={sidebarOpen}
             />
 
-            <SidebarComponent isOpen={sidebarOpen} />
+            <SidebarComponent isOpen={sidebarOpen} user={user} />
 
             <div
                 className={`pt-2 md:ml-64 mt-14 ${

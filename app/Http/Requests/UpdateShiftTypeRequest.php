@@ -11,7 +11,7 @@ class UpdateShiftTypeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('update', \App\Models\ShiftType::class);
     }
 
     /**

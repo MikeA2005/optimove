@@ -11,7 +11,7 @@ class UpdateLoanRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('update', \App\Models\Loan::class);
     }
 
     /**
@@ -28,6 +28,7 @@ class UpdateLoanRequest extends FormRequest
             'installment_value' => 'required|numeric|gt:0',
             'pending_amount' => 'required|numeric|gte:0',
             'employee_id' => 'required|exists:employees,id',
+            'deduction_period' => 'required|in:first,second,both',
         ];
     }
 }

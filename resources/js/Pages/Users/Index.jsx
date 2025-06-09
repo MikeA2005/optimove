@@ -17,12 +17,12 @@ function Index({ auth }) {
     const [isEditOpen, setIsEditOpen] = useState(false); // Controla la visibilidad del drawer de editar
     const [isDeleteOpen, setIsDeleteOpen] = useState(false); // Controla la visibilidad del modal de eliminar
     const [selectedUser, setSelectedUser] = useState(null); // Usuario seleccionado para editar o eliminar
-
+  
     // Función para manejar eventos
     const handleEdit = (user) => {
         setSelectedUser(user); // Establece el usuario
         setIsEditOpen(true); // Abre el drawer de editar
-    };
+    };  
 
     const handleDelete = (user) => {
         setSelectedUser(user); // Establece el usuario
@@ -39,6 +39,10 @@ function Index({ auth }) {
             key: "email",
             label: "Correo Electrónico",
         },
+        {
+            key: "role",
+            label: "Rol",
+        }
     ];
 
     // Función para manejar el cambio en la búsqueda

@@ -12,7 +12,7 @@ class StoreAttendanceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('create', \App\Models\Attendance::class);
     }
 
     /**
@@ -28,7 +28,7 @@ class StoreAttendanceRequest extends FormRequest
             'city_id' => 'required|integer|exists:cities,id',
             'shift_type_id' => 'nullable|integer|exists:shift_types,id',
             'task_id' => 'nullable|integer|exists:tasks,id',
-            'date' => 'required|date|date_equals:today',
+            'date' => 'required|date',
         ];
     }
 }

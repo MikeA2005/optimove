@@ -33,7 +33,6 @@ Route::middleware('auth')->group(function () {
 
     // Ruta para mostrar los detalles de un Payroll Header
     Route::get('/payroll-headers/{payrollHeader}/details', [PayrollHeaderController::class, 'show'])->name('payroll-headers.show'); 
-
 });
 
 Route::middleware('auth')->group(function () {

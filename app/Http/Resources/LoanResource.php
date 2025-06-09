@@ -22,6 +22,7 @@ class LoanResource extends JsonResource
             'installments' => $this->installments,
             'installment_value' => $this->installment_value,
             'pending_amount' => $this->pending_amount,
+            'active' => $this->active,
         ];
     }
 }

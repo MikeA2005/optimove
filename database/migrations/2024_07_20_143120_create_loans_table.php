@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('installments');
             $table->decimal('installment_value', 10, 2);
             $table->decimal('pending_amount', 10, 2);
+            $table->enum('deduction_period', ['first', 'second', 'both'])->default('both');
+            $table->boolean('active')->default(true);
 
             // Relationships
             $table->foreignId('employee_id')->constrained()->onDelete('cascade')->onUpdate('cascade');

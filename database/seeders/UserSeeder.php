@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
             'name' => 'Miguel Ayala',
             'email' => 'madape05@gmail.com',
             'password' => bcrypt('12345678'),
+            'role' => 'admin'
         ]);
     }
 }

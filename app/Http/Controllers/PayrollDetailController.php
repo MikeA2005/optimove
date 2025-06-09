@@ -11,14 +11,17 @@ use App\Models\Employee;
 use App\Models\PayrollHeader;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PayrollDetailController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', PayrollDetail::class);
         $payrollDetails = PayrollDetail::with('employee')
             ->when($request->has('employee_id'), function ($query) use ($request) {
                 $query->where('employee_id', $request->input('employee_id'));
@@ -38,6 +41,7 @@ class PayrollDetailController extends Controller
      */
     public function create(PayrollHeader $payrollHeader)
     {
+        $this->authorize('create', PayrollDetail::class);
         $this->index(new Request());
     }
 
@@ -46,6 +50,7 @@ class PayrollDetailController extends Controller
      */
     public function store(StorePayrollDetailRequest $request, PayrollHeader $payrollHeader)
     {
+        $this->authorize('create', PayrollDetail::class);
         try {
             PayrollDetail::create($request->validated());
             return redirect()->route('payroll-headers.show', $payrollHeader)->with('flash.success', 'Payroll Detail created successfully');;
@@ -67,6 +72,7 @@ class PayrollDetailController extends Controller
      */
     public function edit(PayrollDetail $payrollDetail)
     {
+        $this->authorize('update', $payrollDetail);
         $employees = Employee::all();
         return Inertia::render('Payrolls/Details/Edit', [
             'payrollDetail' => new PayrollDetailResource($payrollDetail),
@@ -79,6 +85,7 @@ class PayrollDetailController extends Controller
      */
     public function update(UpdatePayrollDetailRequest $request, PayrollDetail $payrollDetail)
     {
+        $this->authorize('update', $payrollDetail);
         try {
             $payrollDetail->update($request->validated());
             return redirect()->route('payroll-headers.show', $payrollDetail->payroll_header_id)
@@ -93,6 +100,7 @@ class PayrollDetailController extends Controller
      */
     public function destroy(PayrollDetail $payrollDetail,)
     {
+        $this->authorize('delete', $payrollDetail);
         try {
             $payrollDetail->delete();
             return redirect()->route('payroll-details.index')->with('flash.success', 'Payroll Detail deleted successfully');

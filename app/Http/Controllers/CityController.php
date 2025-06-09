@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CityResource;
 use App\Models\City;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CityController extends Controller
 {
+    use AuthorizesRequests;
     public function index()
     {
+        $this->authorize('viewAny', City::class);
+
         $query = City::query();
 
         if (request('city_name')) {
@@ -28,6 +32,8 @@ class CityController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('create', City::class);
+
         $validated = $request->validate([
             'city_name' => 'required|string|max:255',
         ]);
@@ -39,6 +45,8 @@ class CityController extends Controller
 
     public function update(Request $request, City $city)
     {
+        $this->authorize('update', $city);
+
         $validated = $request->validate([
             'city_name' => 'required|string|max:255',
         ]);
@@ -50,6 +58,8 @@ class CityController extends Controller
 
     public function destroy(City $city)
     {
+        $this->authorize('delete', $city);
+        
         $city->delete();
 
         return redirect(route('cities.index'))->with('flash.success', 'City deleted successfully.');

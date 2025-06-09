@@ -13,15 +13,7 @@ class PayrollDetailPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, PayrollDetail $payrollDetail): bool
-    {
-        //
+        return $user->role === 'rrhh' || $user->role === 'admin';
     }
 
     /**
@@ -29,7 +21,7 @@ class PayrollDetailPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->role === 'rrhh' || $user->role === 'admin';
     }
 
     /**
@@ -37,7 +29,7 @@ class PayrollDetailPolicy
      */
     public function update(User $user, PayrollDetail $payrollDetail): bool
     {
-        //
+        return $user->role === 'rrhh' || $user->role === 'admin';
     }
 
     /**
@@ -45,22 +37,6 @@ class PayrollDetailPolicy
      */
     public function delete(User $user, PayrollDetail $payrollDetail): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, PayrollDetail $payrollDetail): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, PayrollDetail $payrollDetail): bool
-    {
-        //
+        return $user->role === 'admin' || $user->role === 'rrhh';
     }
 }

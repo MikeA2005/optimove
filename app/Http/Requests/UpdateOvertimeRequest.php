@@ -11,7 +11,7 @@ class UpdateOvertimeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('update', \App\Models\Overtime::class);
     }
 
     /**

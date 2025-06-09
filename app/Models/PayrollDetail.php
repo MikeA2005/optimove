@@ -143,15 +143,27 @@ class PayrollDetail extends Model
     private function calculateLoanPayments()
     {
         $totalLoanDiscount = 0;
+        $currentPeriod = $this->getCurrentPeriod();
 
         foreach ($this->employee->loans as $loan) {
-            if ($loan->pending_amount > 0) {
-                $loanDiscount = $this->calculateLoanDiscount($loan);
-                $totalLoanDiscount += $loanDiscount;
-    
-                // Actualizar el saldo del préstamo
-                $loan->pending_amount -= $loanDiscount;
-                $loan->save();
+            if ($loan->pending_amount > 0 && (!isset($loan->active) || $loan->active)) {
+                if (
+                    $loan->deduction_period === 'both' ||
+                    ($loan->deduction_period === 'first' && $currentPeriod === 'first') ||
+                    ($loan->deduction_period === 'second' && $currentPeriod === 'second')
+                ) {
+                    $loanDiscount = $this->calculateLoanDiscount($loan);
+                    $totalLoanDiscount += $loanDiscount;
+
+                    $loan->pending_amount -= $loanDiscount;
+                    if ($loan->pending_amount <= 0) {
+                        $loan->pending_amount = 0;
+                        if (isset($loan->active)) {
+                            $loan->active = false;
+                        }
+                    }
+                    $loan->save();
+                }
             }
         }
 
@@ -161,6 +173,28 @@ class PayrollDetail extends Model
     private function calculateLoanDiscount($loan)
     {
         return min($loan->installment_value, $loan->pending_amount);
+    }
+
+    private function getCurrentPeriod()
+    {
+        $startDate = $this->payrollHeader->start_date;
+        $day = (int)date('d', strtotime($startDate));
+
+        if ($day === 1 || $day === 16) {
+            return 'first';
+        }
+        if ($day === 15 || $day === 30 || $day === 31) {
+            return 'second';
+        }
+
+        if ($day >= 1 && $day <= 5) {
+            return 'first';
+        }
+        if ($day >= 6 && $day <= 20) {
+            return 'second';
+        }
+
+        return $day <= 15 ? 'first' : 'second';
     }
 
     public function payrollHeader()

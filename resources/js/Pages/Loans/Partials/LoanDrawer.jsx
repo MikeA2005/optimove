@@ -23,6 +23,7 @@ export default function LoanDrawer({
         installments: "",
         installment_value: "",
         pending_amount: "",
+        deduction_period: "both",
     });
 
     // Efecto para cargar los datos del préstamo en el formulario si se está editando
@@ -35,6 +36,7 @@ export default function LoanDrawer({
                 installments: loan.installments || "",
                 installment_value: loan.installment_value || "",
                 pending_amount: loan.pending_amount || "",
+                deduction_period: loan.deduction_period || "both",
             });
         }
     }, [loan]);
@@ -201,6 +203,24 @@ export default function LoanDrawer({
                                 className="input"
                             />
                             <InputError message={errors.pending_amount}/>
+                        </div>
+
+                        {/* Período de deducción */}
+                        <div>
+                            <label htmlFor="deduction_period" className="label">
+                                Periodo de descuento
+                            </label>
+                            <select
+                                id="deduction_period"
+                                value={data.deduction_period}
+                                onChange={(e) => setData("deduction_period", e.target.value)}
+                                className="input"
+                            >
+                                <option value="first">Primera quincena</option>
+                                <option value="second">Segunda quincena</option>
+                                <option value="both">Ambas</option>
+                            </select>
+                            <InputError message={errors.deduction_period} />
                         </div>
                     </div>
 

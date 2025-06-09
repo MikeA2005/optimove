@@ -1,1 +1,0 @@
-import{j as s}from"./app-gD87wKxr.js";function m({children:e}){return s.jsxs("div",{className:"min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900",children:[s.jsx("div",{}),s.jsx("div",{className:"w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg",children:e})]})}export{m as G};

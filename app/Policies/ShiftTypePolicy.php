@@ -13,15 +13,7 @@ class ShiftTypePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, ShiftType $shiftType): bool
-    {
-        //
+        return $user->role === 'rrhh' || $user->role === 'admin';
     }
 
     /**
@@ -29,7 +21,7 @@ class ShiftTypePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->role === 'rrhh' || $user->role === 'admin';
     }
 
     /**
@@ -37,7 +29,7 @@ class ShiftTypePolicy
      */
     public function update(User $user, ShiftType $shiftType): bool
     {
-        //
+        return $user->role === 'rrhh' || $user->role === 'admin';
     }
 
     /**
@@ -45,22 +37,6 @@ class ShiftTypePolicy
      */
     public function delete(User $user, ShiftType $shiftType): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, ShiftType $shiftType): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, ShiftType $shiftType): bool
-    {
-        //
+        return $user->role === 'admin' || $user->role === 'rrhh';
     }
 }

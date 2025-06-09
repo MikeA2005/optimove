@@ -11,9 +11,7 @@ class PayrollDetailObserver
      */
     public function created(PayrollDetail $payrollDetail)
     {
-        $payrollHeader = $payrollDetail->payrollHeader;
-        $payrollHeader->settlement_base = $this->calculateSettlementBase($payrollHeader);
-        $payrollHeader->save();
+        $this->updateSettlementBase($payrollDetail);
     }
 
     /**
@@ -21,15 +19,18 @@ class PayrollDetailObserver
      */
     public function updated(PayrollDetail $payrollDetail)
     {
-        $payrollHeader = $payrollDetail->payrollHeader;
-        $payrollHeader->settlement_base = $this->calculateSettlementBase($payrollHeader);
-        $payrollHeader->save();
+        $this->updateSettlementBase($payrollDetail);
     }
 
     /**
      * Handle the PayrollDetail "deleted" event.
      */
     public function deleted(PayrollDetail $payrollDetail)
+    {
+        $this->updateSettlementBase($payrollDetail);
+    }
+
+    private function updateSettlementBase(PayrollDetail $payrollDetail)
     {
         $payrollHeader = $payrollDetail->payrollHeader;
         $payrollHeader->settlement_base = $this->calculateSettlementBase($payrollHeader);
@@ -38,7 +39,6 @@ class PayrollDetailObserver
 
     private function calculateSettlementBase($payrollHeader)
     {
-        $total = $payrollHeader->payrollDetails()->sum('net_pay'); 
-        return $total;
+        return $payrollHeader->payrollDetails()->sum('net_pay'); 
     }
 }

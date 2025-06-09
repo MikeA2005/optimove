@@ -10,14 +10,18 @@ use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class DisabilityController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Disability::class);
+
         $disabilities = Disability::with('employee')
         ->when($request->has('employee_id'), function ($query) use ($request) {
             $query->where('employee_id', 'like', '%' . $request->input('employee_id') . '%');
@@ -40,6 +44,7 @@ class DisabilityController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Disability::class);
         return $this->index(new Request());
     }
 
@@ -48,6 +53,7 @@ class DisabilityController extends Controller
      */
     public function store(StoreDisabilityRequest $request)
     {
+        $this->authorize('create', Disability::class);
         try {
             Disability::create($request->validated());
             return redirect()->route('disabilities.index')->with('flash.success', 'Disability created successfully.');
@@ -69,6 +75,7 @@ class DisabilityController extends Controller
      */
     public function edit(Disability $disability)
     {
+        $this->authorize('update', $disability);
         return Inertia::render('Disabilities/Index', [
             'disabilities' => $disability,
         ]);
@@ -79,6 +86,7 @@ class DisabilityController extends Controller
      */
     public function update(UpdateDisabilityRequest $request, Disability $disability)
     {
+        $this->authorize('update', $disability);
         try {
             $disability->update($request->validated());
             return redirect()->route('disabilities.index')->with('flash.success', 'Disability updated successfully.');
@@ -92,6 +100,7 @@ class DisabilityController extends Controller
      */
     public function destroy(Disability $disability)
     {
+        $this->authorize('delete', $disability);
         try {
             $disability->delete();
             return redirect()->route('disabilities.index')->with('flash.success', 'Disability deleted successfully.');

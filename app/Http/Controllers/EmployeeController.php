@@ -9,17 +9,18 @@ use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
-use Laravel\Prompts\Prompt;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class EmployeeController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Employee::class);
         $employees = Employee::with('user')
             ->when($request->has('last_name'), function ($query) use ($request) {
                 $query->where('last_name', 'like', '%' . $request->input('last_name') . '%');
@@ -42,6 +43,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Employee::class);
         return $this->index(new Request());
     }
 
@@ -50,6 +52,7 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
+        $this->authorize('create', Employee::class);
         try {
             Employee::create($request->validated());
             return redirect()->route('employees.index')->with('flash.success', 'Employee created successfully.');
@@ -71,6 +74,7 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
+        $this->authorize('update', $employee);
         return Inertia::render('Employees/Index', [
             'employee' => new EmployeeResource($employee),
             'users' => UserResource::collection(User::all()),
@@ -82,6 +86,7 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
+        $this->authorize('update', $employee);
         try {
             $employee->update($request->validated());
             return redirect()->route('employees.index')->with('flash.success', 'Employee updated successfully.');
@@ -95,6 +100,7 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
+        $this->authorize('delete', $employee);
         try {
             $employee->delete();
             return redirect()->route('employees.index')->with('flash.success', 'Employee deleted successfully.');

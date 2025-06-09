@@ -13,15 +13,7 @@ class LoanPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Loan $loan): bool
-    {
-        //
+        return $user->role === 'rrhh' || $user->role === 'admin';
     }
 
     /**
@@ -29,7 +21,7 @@ class LoanPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->role === 'rrhh' || $user->role === 'admin';
     }
 
     /**
@@ -37,7 +29,7 @@ class LoanPolicy
      */
     public function update(User $user, Loan $loan): bool
     {
-        //
+        return $user->role === 'rrhh' || $user->role === 'admin';
     }
 
     /**
@@ -45,22 +37,6 @@ class LoanPolicy
      */
     public function delete(User $user, Loan $loan): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Loan $loan): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Loan $loan): bool
-    {
-        //
+        return $user->role === 'admin' || $user->role === 'rrhh';
     }
 }

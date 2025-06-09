@@ -10,11 +10,15 @@ use App\Models\City;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ClientController extends Controller
 {
+    use AuthorizesRequests;
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Client::class);
+
         $clients = Client::query()
             ->when($request->has('company_name'), function ($query) use ($request) {
                 $query->where('company_name', 'like', '%' . $request->input('company_name') . '%');
@@ -35,11 +39,13 @@ class ClientController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Client::class);
         return $this->index(new Request());
     }
 
     public function store(StoreClientRequest $request)
     {
+        $this->authorize('create', Client::class);
         try {
             $client = Client::create($request->all());
             $client->cities()->attach($request->cities);
@@ -59,6 +65,8 @@ class ClientController extends Controller
 
     public function edit(Client $client)
     {
+        $this->authorize('update', $client);
+
         $cities = City::all();
 
         return Inertia::render('Clients/Index', [
@@ -69,6 +77,7 @@ class ClientController extends Controller
 
     public function update(UpdateClientRequest $request, Client $client)
     {
+        $this->authorize('update', $client);
         try {
             $client->update($request->all());
             $client->cities()->sync($request->cities);
@@ -80,6 +89,7 @@ class ClientController extends Controller
 
     public function destroy(Client $client)
     {
+        $this->authorize('delete', $client);
         try {
             $client->delete();
             return redirect()->route('clients.index')->with('flash.success', 'Client deleted successfully.');

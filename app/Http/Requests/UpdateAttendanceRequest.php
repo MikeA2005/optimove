@@ -12,7 +12,7 @@ class UpdateAttendanceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('update', \App\Models\Attendance::class);
     }
 
     /**

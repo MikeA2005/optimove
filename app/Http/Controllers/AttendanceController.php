@@ -14,14 +14,18 @@ use App\Models\Employee;
 use App\Models\ShiftType;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AttendanceController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Attendance::class);
+
         $attendances = Attendance::with('employee', 'client', 'city', 'shiftType', 'task')
             ->when($request->has('date'), function ($query) use ($request) {
                 $query->where('date', 'like', '%' . $request->input('date') . '%');
@@ -54,6 +58,7 @@ class AttendanceController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Attendance::class);
         return $this->index(new Request());
     }
 
@@ -62,6 +67,7 @@ class AttendanceController extends Controller
      */
     public function store(StoreAttendanceRequest $request)
     {
+        $this->authorize('create', Attendance::class);
         try {
             Attendance::create($request->validated());
             return redirect()->route('attendances.index')->with('flash.success', 'Attendance created successfully.');
@@ -83,6 +89,8 @@ class AttendanceController extends Controller
      */
     public function edit(Attendance $attendance)
     {
+        $this->authorize('update', $attendance);
+
         $clients = Client::with('cities')->get();
 
         return Inertia::render('Attendances/Index', [
@@ -98,6 +106,8 @@ class AttendanceController extends Controller
      */
     public function update(UpdateAttendanceRequest $request, Attendance $attendance)
     {
+        $this->authorize('update', $attendance);
+
         try {
             $attendance->update($request->validated());
             return redirect()->route('attendances.index')->with('flash.success', 'Attendance updated successfully.');
@@ -111,6 +121,8 @@ class AttendanceController extends Controller
      */
     public function destroy(Attendance $attendance)
     {
+        $this->authorize('delete', $attendance);
+        
         try {
             $attendance->delete();
             return redirect()->route('attendances.index')->with('flash.success', 'Attendance deleted successfully.');

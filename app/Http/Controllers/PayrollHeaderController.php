@@ -11,14 +11,17 @@ use App\Http\Resources\PayrollHeaderResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PayrollHeaderController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', PayrollHeader::class);
         $payrollHeaders = PayrollHeader::query()
             ->when($request->has('name'), function ($query) use ($request) {
                 $query->where('name', 'like', '%' . $request->input('name') . '%');
@@ -37,6 +40,7 @@ class PayrollHeaderController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', PayrollHeader::class);
         return $this->index(new Request());
     }
 
@@ -45,6 +49,7 @@ class PayrollHeaderController extends Controller
      */
     public function store(StorePayrollHeaderRequest $request)
     {
+        $this->authorize('create', PayrollHeader::class);
         try {
             PayrollHeader::create($request->validated());
             return redirect()->route('payroll-headers.index')->with('flash.success', 'Payroll Header created successfully');
@@ -58,6 +63,7 @@ class PayrollHeaderController extends Controller
      */
     public function show(PayrollHeader $payrollHeader)
     {
+        $this->authorize('view', $payrollHeader);
         $payrollDetails = $payrollHeader->payrollDetails()->with('employee')->get();
 
         return Inertia::render('Payrolls/Details/Index', [
@@ -72,6 +78,7 @@ class PayrollHeaderController extends Controller
      */
     public function edit(PayrollHeader $payrollHeader)
     {
+        $this->authorize('update', $payrollHeader);
         return Inertia::render('Payrolls/Headers/Index', [
             'payrollHeader' => new PayrollHeaderResource($payrollHeader)
         ]);
@@ -82,6 +89,7 @@ class PayrollHeaderController extends Controller
      */
     public function update(UpdatePayrollHeaderRequest $request, PayrollHeader $payrollHeader)
     {
+        $this->authorize('update', $payrollHeader);
         try {
             $payrollHeader->update($request->validated());
             return redirect()->route('payroll-headers.index')->with('flash.success', 'Payroll Header updated successfully');
@@ -95,6 +103,7 @@ class PayrollHeaderController extends Controller
      */
     public function destroy(PayrollHeader $payrollHeader)
     {
+        $this->authorize('delete', $payrollHeader);
         try {
             $payrollHeader->delete();
             return redirect()->route('payroll-headers.index')->with('flash.success', 'Payroll header deleted successfully.');

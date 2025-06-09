@@ -12,14 +12,17 @@ use App\Models\Employee;
 use App\Models\OvertimeType;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class OvertimeController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Overtime::class);
         $overtimes = Overtime::with('employee', 'overtimeType')
         ->when($request->has('employee_id'), function ($query) use ($request) {
             $query->where('employee_id', 'like', '%' . $request->input('employee_id') . '%');
@@ -43,6 +46,7 @@ class OvertimeController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Overtime::class);
         return $this->index(new Request());
     }
 
@@ -51,6 +55,7 @@ class OvertimeController extends Controller
      */
     public function store(StoreOvertimeRequest $request)
     {
+        $this->authorize('create', Overtime::class);
         try {
             Overtime::create($request->validated());
             return redirect()->route('overtimes.index')->with('flash.success', 'Overtime created successfully.');
@@ -72,6 +77,7 @@ class OvertimeController extends Controller
      */
     public function edit(Overtime $overtime)
     {
+        $this->authorize('update', $overtime);
         return Inertia::render('Overtimes/Index', [
             'overtime' => new OvertimeResource($overtime),
             'employees' => EmployeeResource::collection(Employee::all()),
@@ -84,6 +90,7 @@ class OvertimeController extends Controller
      */
     public function update(UpdateOvertimeRequest $request, Overtime $overtime)
     {
+        $this->authorize('update', $overtime);
         try {
             $overtime->update($request->validated());
             return redirect()->route('overtimes.index')->with('flash.success', 'Overtime updated successfully.');
@@ -97,6 +104,7 @@ class OvertimeController extends Controller
      */
     public function destroy(Overtime $overtime)
     {
+        $this->authorize('delete', $overtime);
         try {
             $overtime->delete();
             return redirect()->route('overtimes.index')->with('flash.success', 'Overtime deleted successfully.');

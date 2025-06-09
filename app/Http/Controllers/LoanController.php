@@ -10,14 +10,17 @@ use App\Http\Resources\LoanResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class LoanController extends Controller
 {
+    use AuthorizesRequests;   
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Loan::class);
         $loans = Loan::with('employee')
         ->when($request->has('employee_id'), function ($query) use ($request) {
             $query->where('employee_id', $request->input('employee_id'));
@@ -37,6 +40,7 @@ class LoanController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Loan::class);
         return Inertia::render('Loans/Index', [
             'loan' => null,
             'employees' => EmployeeResource::collection(Employee::all()),
@@ -48,6 +52,7 @@ class LoanController extends Controller
      */
     public function store(StoreLoanRequest $request)
     {
+        $this->authorize('create', Loan::class);
         try {
             Loan::create($request->validated());
             return redirect()->route('loans.index')->with('flash.success', 'Loan created successfully.');
@@ -69,6 +74,7 @@ class LoanController extends Controller
      */
     public function edit(Loan $loan)
     {
+        $this->authorize('update', $loan);
         return Inertia::render('Loans/Index', [
             'loan' => new LoanResource($loan),
             'employees' => EmployeeResource::collection(Employee::all()),
@@ -80,19 +86,21 @@ class LoanController extends Controller
      */
     public function update(UpdateLoanRequest $request, Loan $loan)
     {
+        $this->authorize('update', $loan);
         try {
             $loan->update($request->validated());
             return redirect()->route('loans.index')->with('flash.success', 'Loan updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('flash.error', 'Error updating loan.');
         }
-    }
+    } 
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Loan $loan)
     {
+        $this->authorize('delete', $loan);
         try {
             $loan->delete();
             return redirect()->route('loans.index')->with('flash.success', 'Loan deleted successfully.');
