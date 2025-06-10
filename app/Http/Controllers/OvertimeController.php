@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OvertimesExport;
 use App\Models\Overtime;
 use App\Http\Requests\StoreOvertimeRequest;
 use App\Http\Requests\UpdateOvertimeRequest;
@@ -13,6 +14,7 @@ use App\Models\OvertimeType;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OvertimeController extends Controller
 {
@@ -110,6 +112,15 @@ class OvertimeController extends Controller
             return redirect()->route('overtimes.index')->with('flash.success', 'Overtime deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('flash.error', 'Error deleting overtime.');
+        }
+    }
+
+    public function export()
+    {
+        try {
+            return Excel::download(new OvertimesExport, 'horas-extras.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('flash.error', 'Error exporting overtime data.');
         }
     }
 }

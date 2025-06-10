@@ -13,7 +13,7 @@ class EmployeePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role === 'rrhh' || $user->role === 'admin';
+        return $user->role === 'rrhh' || $user->role === 'admin' || $user->role === 'operaciones';
     }
 
     /**
@@ -21,7 +21,7 @@ class EmployeePolicy
      */
     public function create(User $user): bool
     {
-        return $user->role === 'rrhh' || $user->role === 'admin';
+        return $user->role === 'rrhh' || $user->role === 'admin' || $user->role === 'operaciones';
     }
 
     /**

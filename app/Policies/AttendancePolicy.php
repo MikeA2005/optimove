@@ -29,7 +29,14 @@ class AttendancePolicy
      */
     public function update(User $user, Attendance $attendance): bool
     {
-        return $user->role === 'rrhh' || $user->role === 'admin' || $user->role === 'operaciones';
+        if ($user->role === 'rrhh' || $user->role === 'admin') {
+            return true;
+        }
+
+        if ($user->role === 'operaciones') {
+            return $attendance->date === now()->toDateString();
+        }
+        return false;
     }
 
     /**
@@ -37,6 +44,6 @@ class AttendancePolicy
      */
     public function delete(User $user, Attendance $attendance): bool
     {
-        return $user->role === 'admin' || $user->role === 'rrhh' || $user->role === 'operaciones';
+        return $user->role === 'admin' || $user->role === 'rrhh';
     }
 }

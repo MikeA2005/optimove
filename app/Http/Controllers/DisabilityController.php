@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DisabilitiesExport;
 use App\Models\Disability;
 use App\Http\Requests\StoreDisabilityRequest;
 use App\Http\Requests\UpdateDisabilityRequest;
@@ -11,6 +12,7 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DisabilityController extends Controller
 {
@@ -106,6 +108,15 @@ class DisabilityController extends Controller
             return redirect()->route('disabilities.index')->with('flash.success', 'Disability deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('flash.error', 'An error occurred while deleting the disability.');
+        }
+    }
+
+    public function export()
+    {
+        try {
+            return Excel::download(new DisabilitiesExport, 'incapacidades.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('flash.error', 'An error occurred while exporting disabilities.');
         }
     }
 }

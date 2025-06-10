@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AttendancesExport;
 use App\Models\Attendance;
 use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
@@ -15,6 +16,7 @@ use App\Models\ShiftType;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AttendanceController extends Controller
 {
@@ -128,6 +130,15 @@ class AttendanceController extends Controller
             return redirect()->route('attendances.index')->with('flash.success', 'Attendance deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('flash.error', 'Error deleting attendance.');
+        }
+    }
+
+    public function export()
+    {
+        try {
+            return Excel::download(new AttendancesExport, 'asistencias.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('flash.error', 'Error exporting attendances.');
         }
     }
 }

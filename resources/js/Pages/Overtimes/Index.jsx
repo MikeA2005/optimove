@@ -79,7 +79,7 @@ function Index({ auth }) {
             <Head title="Horas Extras" />
 
             <PageHeader
-                title="Todas las horas extras"
+                title="Todas las Horas Extras"
                 breadcrumbs={[
                     { label: "Inicio", url: route("dashboard"), icon: HiHome },
                     { label: "Horas extras" },
@@ -89,6 +89,7 @@ function Index({ auth }) {
                 addButtonText="Agregar horas extras"
                 onSearch={handleSearchChange}
                 initialSearchTerm=""
+                exportUrl={route("overtimes.export")}
             />
 
             <GenericTable
@@ -96,6 +97,8 @@ function Index({ auth }) {
                 columns={columns}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                canEdit={auth.user.role === "rrhh" || auth.user.role === "admin"}
+                canDelete={auth.user.role === "rrhh" || auth.user.role === "admin"}
             />
 
             <Pagination links={overtimes.links} meta={overtimes.meta} />

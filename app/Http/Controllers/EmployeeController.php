@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\EmployeesExport;
 use App\Models\Employee;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
@@ -11,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
@@ -106,6 +108,15 @@ class EmployeeController extends Controller
             return redirect()->route('employees.index')->with('flash.success', 'Employee deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('flash.error', 'Error deleting employee.');
+        }
+    }
+
+    public function export()
+    {
+        try {
+            return Excel::download(new EmployeesExport, 'empleados.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('flash.error', 'Error exporting employees.');
         }
     }
 }

@@ -106,6 +106,7 @@ function Index({ auth }) {
                 addButtonText="Agregar préstamo"
                 onSearch={handleSearchChange}
                 initialSearchTerm=""
+                exportUrl={route("loans.export")}
             />
 
             <GenericTable

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LoansExport;
 use App\Models\Loan;
 use App\Http\Requests\StoreLoanRequest;
 use App\Http\Requests\UpdateLoanRequest;
@@ -11,6 +12,7 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LoanController extends Controller
 {
@@ -106,6 +108,15 @@ class LoanController extends Controller
             return redirect()->route('loans.index')->with('flash.success', 'Loan deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('flash.error', 'Error deleting loan.');
+        }
+    }
+
+    public function export()
+    {
+        try {
+            return Excel::download(new LoansExport, 'prestamos.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('flash.error', 'Error exporting loans.');
         }
     }
 }

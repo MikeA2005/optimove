@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { HiChartPie, HiUsers, HiCollection, HiCalculator, HiBriefcase } from 'react-icons/hi';
 
 function SidebarComponent({ isOpen, user }) {        
-    const [isRrrhOpen, setIsRrrhOpen] = useState(false); // Establece el estado de la sección de RRHH
-    const [isOperationsOpen, setIsOperationsOpen] = useState(false); // Establece el estado de la sección de Operaciones
+    const [isRrrhOpen, setIsRrrhOpen] = useState(false); // Estado para sección RRHH
+    const [isOperationsOpen, setIsOperationsOpen] = useState(false); // Estado para sección Operaciones
 
     // Rutas de RRHH
     const rrhhRoutes = [
@@ -23,14 +23,19 @@ function SidebarComponent({ isOpen, user }) {
         'cities.index',
     ];
 
-    // Verifica si la ruta actual pertenece a la sección de RRHH u Operaciones y establece el estado de las secciones para mostrarlas abiertas
+    // Abre/cierra secciones según la ruta actual
     useEffect(() => {
         const currentRoute = route().current();
         setIsRrrhOpen(rrhhRoutes.includes(currentRoute));
         setIsOperationsOpen(operationsRoutes.includes(currentRoute));
     }, [route().current()]);
 
-  return (
+    // Helpers para roles
+    const isAdmin = user.role === 'admin';
+    const isRrhh = user.role === 'rrhh';
+    const isOperaciones = user.role === 'operaciones';
+
+    return (
         <Sidebar 
             theme={{
                 root: {
@@ -47,50 +52,67 @@ function SidebarComponent({ isOpen, user }) {
         >
             <Sidebar.Items>
                 <Sidebar.ItemGroup>
-                    { user.role === 'admin' && (
+                    {/* Dashboard: Solo admin y rrhh */}
+                    {(isAdmin || isRrhh) && (
                         <Sidebar.Item as={Link} icon={HiChartPie} href={route('dashboard')} active={route().current('dashboard')}>
-                                Dashboard
+                            Dashboard
                         </Sidebar.Item>
                     )}
-                            
+                    
+                    {/* RRHH: admin, rrhh y operaciones (con permisos distintos) */}
                     <Sidebar.Collapse icon={HiCollection} label="RRHH" open={isRrrhOpen} aria-label='Recursos Humanos'>
-                        <Sidebar.Item as={Link} href={route('employees.index')} active={route().current('employees.index')}>
-                            Empleados
-                        </Sidebar.Item>
-                        <Sidebar.Item as={Link} href={route('attendances.index')} active={route().current('attendances.index')}>
-                            Asistencias
-                        </Sidebar.Item>
-                        <Sidebar.Item as={Link} href={route('disabilities.index')} active={route().current('disabilities.index')}>
-                            Incapacidades
-                        </Sidebar.Item>
-                        <Sidebar.Item as={Link} href={route('overtimes.index')} active={route().current('overtimes.index')}>
-                            Horas extra
-                        </Sidebar.Item>
-                        <Sidebar.Item as={Link} href={route('loans.index')} active={route().current('loans.index')}>
-                            Prestamos
-                        </Sidebar.Item>
+                        {(isAdmin || isRrhh || isOperaciones) && (
+                            <>
+                                <Sidebar.Item as={Link} href={route('employees.index')} active={route().current('employees.index')}>
+                                    Empleados
+                                </Sidebar.Item>
+                                <Sidebar.Item as={Link} href={route('attendances.index')} active={route().current('attendances.index')}>
+                                    Asistencias
+                                </Sidebar.Item>
+                                <Sidebar.Item as={Link} href={route('disabilities.index')} active={route().current('disabilities.index')}>
+                                    Incapacidades
+                                </Sidebar.Item>
+                                <Sidebar.Item as={Link} href={route('overtimes.index')} active={route().current('overtimes.index')}>
+                                    Horas extra
+                                </Sidebar.Item>
+                            </>
+                        )}
+                        {/* Prestamos: solo admin y rrhh */}
+                        {(isAdmin || isRrhh) && (
+                            <Sidebar.Item as={Link} href={route('loans.index')} active={route().current('loans.index')}>
+                                Prestamos
+                            </Sidebar.Item>
+                        )}
                     </Sidebar.Collapse>
-
-                    <Sidebar.Item as={Link} icon={ HiCalculator } href={route('payroll-headers.index')} active={route().current('payroll-headers.index')}>
-                        Nómina
-                    </Sidebar.Item>
-
-                    <Sidebar.Collapse icon={ HiBriefcase } label="Operations" open={isOperationsOpen} aria-label='Operaciones'>
-                        <Sidebar.Item as={Link} href={route('clients.index')} active={route().current('clients.index')}>
-                            Clientes
+                    
+                    {/* Nómina: solo admin y rrhh */}
+                    {(isAdmin || isRrhh) && (
+                        <Sidebar.Item as={Link} icon={HiCalculator} href={route('payroll-headers.index')} active={route().current('payroll-headers.index')}>
+                            Nómina
                         </Sidebar.Item>
-                        <Sidebar.Item as={Link} href={route('cities.index')} active={route().current('cities.index')}>
-                            Ciudades
-                        </Sidebar.Item>
-                    </Sidebar.Collapse>
+                    )}
 
-                    <Sidebar.Item as={Link} href={route('users.index')} active={route().current('users.index')} icon={HiUsers}>
-                        Usuarios
-                    </Sidebar.Item>
+                    {/* Operaciones y Usuarios: solo admin */}
+                    {isAdmin && (
+                        <>
+                            <Sidebar.Collapse icon={HiBriefcase} label="Operaciones" open={isOperationsOpen} aria-label='Operaciones'>
+                                <Sidebar.Item as={Link} href={route('clients.index')} active={route().current('clients.index')}>
+                                    Operaciones
+                                </Sidebar.Item>
+                                <Sidebar.Item as={Link} href={route('cities.index')} active={route().current('cities.index')}>
+                                    Ciudades
+                                </Sidebar.Item>
+                            </Sidebar.Collapse>
+
+                            <Sidebar.Item as={Link} href={route('users.index')} active={route().current('users.index')} icon={HiUsers}>
+                                Usuarios
+                            </Sidebar.Item>
+                        </>
+                    )}
                 </Sidebar.ItemGroup>
             </Sidebar.Items>
         </Sidebar>
-  )
+    )
 }
 
 export default SidebarComponent

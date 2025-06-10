@@ -9,6 +9,7 @@ import Pagination from "@/Components/Pagination";
 import AttendanceDrawer from "./Partials/AttendanceDrawer";
 import DeleteModal from "@/Components/DeleteModal";
 import dayjs from "dayjs";
+import { isToday } from "date-fns";
 
 // Componente Index para la página de asistencias
 export default function Index({ auth }) {
@@ -80,19 +81,20 @@ export default function Index({ auth }) {
     // Renderizado del componente
     return (
         <AuthenticatedLayout user={auth.user}>
-            <Head title="Attendances" />
+            <Head title="Asistencias" />
 
             <PageHeader
-                title="Attendances"
+                title="Todas las Asistencias"
                 breadcrumbs={[
                     { label: "Inicio", url: route("dashboard"), icon: HiHome },
-                    { label: "Attendances" },
+                    { label: "Asistencias" },
                 ]}
                 searchPlaceholder="Buscar asistencias"
                 onAddClick={() => setIsAddOpen(true)}
                 addButtonText="Agregar asistencia"
                 onSearch={handleSearchChange}
                 initialSearchTerm=""
+                exportUrl={route("attendances.export")}
             />
 
             <GenericTable
@@ -100,6 +102,12 @@ export default function Index({ auth }) {
                 columns={columns}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                canEdit={item =>
+                    auth.user.role === "rrhh" ||
+                    auth.user.role === "admin" ||
+                    (auth.user.role === "operaciones" && isToday(new Date(item.date)))
+                }
+                canDelete={auth.user.role === "rrhh" || auth.user.role === "admin"}
             />
 
             <Pagination links={attendances.links} meta={attendances.meta} />

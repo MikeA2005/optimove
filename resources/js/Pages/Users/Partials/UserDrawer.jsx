@@ -120,8 +120,8 @@ export default function UserDrawer({ isOpen, onClose, user = null }) {
                             >
                                 <option value="" disabled>Seleccione un rol...</option>
                                 <option value="admin">Administrador</option>
-                                <option value="rrhh">Recuersos Humanos</option>
-                                <option value="operaciones">Coordinadores</option>
+                                <option value="rrhh">Recursos Humanos</option>
+                                <option value="operaciones">Coordinador</option>
                             </select>
                             <InputError message={errors.role} />
                         </div>

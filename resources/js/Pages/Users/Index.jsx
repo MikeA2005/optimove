@@ -44,6 +44,17 @@ function Index({ auth }) {
         {
             key: "role",
             label: "Rol",
+            render: (user) => {
+              if (user.role === "admin") {
+                return "Administrador";
+              }
+              if (user.role === "rrhh") {
+                return "RRHH";
+              }
+              if (user.role === "operaciones") {
+                return "Coordinador";
+              }
+            }
         }
     ];
 

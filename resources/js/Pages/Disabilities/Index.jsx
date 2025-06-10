@@ -74,19 +74,20 @@ export default function Index({ auth }) {
     // Renderizado del componente
     return (
         <AuthenticatedLayout user={auth.user}>
-            <Head title="Disabilities" />
+            <Head title="Incapacidades" />
 
             <PageHeader
-                title="Disabilities"
+                title="Todas las Incapacidades"
                 breadcrumbs={[
                     { label: "Inicio", url: route("dashboard"), icon: HiHome },
-                    { label: "Disabilities" },
+                    { label: "Incapacidades" },
                 ]}
                 onAddClick={() => setIsAddOpen(true)}
                 searchPlaceholder="Buscar Incapacidad"
                 addButtonText="Agregar Incapacidad"
                 onSearch={handleSearchChange}
                 initialSearchTerm=""
+                exportUrl={route("disabilities.export")}
             />
 
             <GenericTable
@@ -94,6 +95,8 @@ export default function Index({ auth }) {
                 columns={columns}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                canEdit={auth.user.role === "rrhh" || auth.user.role === "admin"}
+                canDelete={auth.user.role === "rrhh" || auth.user.role === "admin"}
             />
 
             <Pagination links={disabilities.links} meta={disabilities.meta} />

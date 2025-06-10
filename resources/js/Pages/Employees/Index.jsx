@@ -75,7 +75,6 @@ function Index({ auth }) {
         );
     };
 
-
     // Renderiza la página de empleados
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -92,6 +91,7 @@ function Index({ auth }) {
                 addButtonText="Agregar empleado"
                 onSearch={handleSearchChange}
                 initialSearchTerm=""
+                exportUrl={route("employees.export")}
             />
 
             <GenericTable
@@ -99,6 +99,8 @@ function Index({ auth }) {
                 columns={columns}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                canEdit={auth.user.role === "rrhh" || auth.user.role === "admin"}
+                canDelete={auth.user.role === "rrhh" || auth.user.role === "admin"}
             />
 
             <Pagination links={employees.links} meta={employees.meta} />

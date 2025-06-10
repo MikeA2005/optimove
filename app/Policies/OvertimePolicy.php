@@ -11,7 +11,7 @@ class OvertimePolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user, Overtime $overtime): bool
+    public function viewAny(User $user): bool
     {
         return $user->role === 'rrhh' || $user->role === 'admin' || $user->role === 'operaciones';
     }

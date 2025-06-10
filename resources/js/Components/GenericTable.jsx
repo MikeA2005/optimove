@@ -2,7 +2,18 @@ import { Table, Button } from "flowbite-react";
 import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import PropTypes from "prop-types";
 
-function GenericTable({ data, columns, onEdit, onDelete }) {
+/**
+ * GenericTable
+ *
+ * Props:
+ * - data: array de objetos a mostrar
+ * - columns: array de { key, label, render? }
+ * - onEdit: función a ejecutar al editar
+ * - onDelete: función a ejecutar al eliminar
+ * - canEdit: booleano o función (item) => boolean, controla visibilidad del botón editar
+ * - canDelete: booleano o función (item) => boolean, controla visibilidad del botón eliminar
+ */
+function GenericTable({ data, columns, onEdit, onDelete, canEdit = true, canDelete = true }) {
     return (
         <div className="flex flex-col">
             <div className="overflow-x-auto">
@@ -54,26 +65,31 @@ function GenericTable({ data, columns, onEdit, onDelete }) {
 
                                     {/* Acciones */}
                                     <Table.Cell className="p-4 space-x-2 whitespace-nowrap">
-                                        {/* Remove extra whitespace here */}
-                                        <Button
-                                            color="blue"
-                                            size="xs"
-                                            className="inline-flex items-center"
-                                            onClick={() => onEdit(item)}
-                                            aria-label={`Edit ${item.id}`}
-                                        >
-                                            <HiOutlinePencilAlt className="h-5 w-5" />
-                                        </Button>
+                                        {/* Botón Editar: solo si canEdit es true o retorna true para este item */}
+                                        {(typeof canEdit === "function" ? canEdit(item) : canEdit) && (
+                                            <Button
+                                                color="blue"
+                                                size="xs"
+                                                className="inline-flex items-center"
+                                                onClick={() => onEdit(item)}
+                                                aria-label={`Edit ${item.id}`}
+                                            >
+                                                <HiOutlinePencilAlt className="h-5 w-5" />
+                                            </Button>
+                                        )}
 
-                                        <Button
-                                            color="failure"
-                                            size="xs"
-                                            className="inline-flex items-center"
-                                            onClick={() => onDelete(item)}
-                                            aria-label={`Delete ${item.id}`}
-                                        >
-                                            <HiOutlineTrash className="h-5 w-5" />
-                                        </Button>
+                                        {/* Botón Eliminar: solo si canDelete es true o retorna true para este item */}
+                                        {(typeof canDelete === "function" ? canDelete(item) : canDelete) && (
+                                            <Button
+                                                color="failure"
+                                                size="xs"
+                                                className="inline-flex items-center"
+                                                onClick={() => onDelete(item)}
+                                                aria-label={`Delete ${item.id}`}
+                                            >
+                                                <HiOutlineTrash className="h-5 w-5" />
+                                            </Button>
+                                        )}
                                     </Table.Cell>
                                 </Table.Row>
                             ))}
@@ -91,10 +107,13 @@ GenericTable.propTypes = {
         PropTypes.shape({
             key: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
+            render: PropTypes.func,
         })
     ).isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
+    canEdit: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+    canDelete: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
 };
 
 export default GenericTable;
